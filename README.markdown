@@ -4,7 +4,6 @@ Utilities for Unicode characters in Emacs.
 
 ucs-utils
 ---------
-
 This library provides some utilities for manipulating Unicode
 characters.  There are three interactive commands
 
@@ -30,7 +29,6 @@ A typical use might be
 
 See Also
 ---------
-
 M-x customize-group RET ucs-utils RET
 
 [http://en.wikipedia.org/wiki/Universal_Character_Set](http://en.wikipedia.org/wiki/Universal_Character_Set)
