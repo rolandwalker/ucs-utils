@@ -4,8 +4,8 @@
 ;;
 ;; Author: Roland Walker walker@pobox.com
 ;; URL: https://github.com/rolandwalker/ucs-utils.el
-;; Version: 0.6.0
-;; Last-Updated: 19 Aug 2012
+;; Version: 0.6.1
+;; Last-Updated: 23 Aug 2012
 ;; EmacsWiki: UcsUtils
 ;; Package-Requires: ((persistent-soft "0.8.0"))
 ;; Keywords: I18n
@@ -608,7 +608,7 @@ The character at the position END is not included, matching the
 behavior of `subst-char-in-region'.
 
 This function is slower than `subst-char-in-region'."
-  (if noundo
+  (if no-undo
       (let ((buffer-undo-list nil)
             (modified (buffer-modified-p)))
         (ucs-utils--subst-char-in-region-1 start end from-char to-char)
