@@ -4,8 +4,8 @@
 ;;
 ;; Author: Roland Walker walker@pobox.com
 ;; URL: https://github.com/rolandwalker/ucs-utils.el
-;; Version: 0.6.2
-;; Last-Updated: 23 Aug 2012
+;; Version: 0.6.4
+;; Last-Updated: 27 Aug 2012
 ;; EmacsWiki: UcsUtils
 ;; Package-Requires: ((persistent-soft "0.8.0") (pcache "0.2.3"))
 ;; Keywords: I18n
@@ -122,7 +122,7 @@
 ;;;###autoload
 (defgroup ucs-utils nil
   "Utilities for Unicode characters."
-  :version "0.6.2"
+  :version "0.6.4"
   :link '(emacs-commentary-link "ucs-utils")
   :prefix "ucs-utils-"
   :group 'extensions)
