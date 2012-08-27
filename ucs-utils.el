@@ -112,6 +112,11 @@
 (autoload 'persistent-soft-exists-p  "persistent-soft" "Return t if SYMBOL exists in the LOCATION persistent data store."   t)
 (autoload 'persistent-soft-flush     "persistent-soft" "Flush data for the LOCATION data store to disk."                    t)
 
+(declare-function gensym                           "cl-macs.el")
+(declare-function memoize                          "memoize.el")
+(declare-function memoize-wrap                     "memoize.el")
+(declare-function ucs-utils-orig-read-char-by-name "ucs-utils.el")
+
 ;;; customizable variables
 
 ;;;###autoload
@@ -752,6 +757,7 @@ The following aliases will be installed
 ;; mangle-whitespace: t
 ;; require-final-newline: t
 ;; coding: utf-8
+;; byte-compile-warnings: (not cl-functions)
 ;; End:
 ;;
 ;; LocalWords:  UcsUtils utils eval callf flet YOGH alist ZHAR PHAR
