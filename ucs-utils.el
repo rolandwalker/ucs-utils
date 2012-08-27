@@ -762,6 +762,7 @@ The following aliases will be installed
 ;; require-final-newline: t
 ;; coding: utf-8
 ;; byte-compile-warnings: (not cl-functions)
+;; no-byte-compile: t
 ;; End:
 ;;
 ;; LocalWords:  UcsUtils utils eval callf flet YOGH alist ZHAR PHAR
