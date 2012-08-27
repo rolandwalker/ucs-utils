@@ -342,6 +342,7 @@ Returns nil if NAME does not exist."
         (setq name (replace-match "NKo" 'fixed-case 'literal name))))
     name))
 
+;;;###autoload
 (defun ucs-utils-all-prettified-names (&optional progress regenerate)
   "All prettified UCS names, cached in list `ucs-utils-all-prettified-names'.
 
