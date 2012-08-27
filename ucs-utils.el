@@ -48,9 +48,13 @@
 ;;
 ;; Notes
 ;;
-;; Compatibility
+;; Compatibility and Requirements
 ;;
 ;;    Tested only on GNU Emacs version 24.1
+;;
+;;    Requires persistent-soft.el
+;;
+;;    Uses memoize.el if present
 ;;
 ;; Bugs
 ;;
