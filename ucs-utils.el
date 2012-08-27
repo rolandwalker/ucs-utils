@@ -8,7 +8,7 @@
 ;; Last-Updated: 27 Aug 2012
 ;; EmacsWiki: UcsUtils
 ;; Package-Requires: ((persistent-soft "0.8.0") (pcache "0.2.3"))
-;; Keywords: I18n
+;; Keywords: i18n, extensions
 ;;
 ;; Simplified BSD License
 ;;
