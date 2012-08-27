@@ -54,7 +54,7 @@
 ;;
 ;;    Requires persistent-soft.el
 ;;
-;;    Uses memoize.el if present
+;;    Uses if present: memoize.el
 ;;
 ;; Bugs
 ;;
