@@ -37,6 +37,6 @@ Compatibility and Requirements
 ------------------------------
 Tested only on GNU Emacs version 24.1
 
-Requires persistent-soft.el
+Requires [persistent-soft.el](http://github.com/rolandwalker/persistent-soft)
 
-Uses if present: memoize.el
+Uses if present: [memoize.el](http://github.com/skeeto/emacs-memoize)
