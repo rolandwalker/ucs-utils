@@ -3,7 +3,8 @@
 ;; Copyright (c) 2012 Roland Walker
 ;;
 ;; Author: Roland Walker walker@pobox.com
-;; URL: https://github.com/rolandwalker/ucs-utils.el
+;; Homepage: http://github.com/rolandwalker/ucs-utils
+;; URL: http://raw.github.com/rolandwalker/ucs-utils/master/ucs-utils.el
 ;; Version: 0.6.4
 ;; Last-Updated: 27 Aug 2012
 ;; EmacsWiki: UcsUtils
