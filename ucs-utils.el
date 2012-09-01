@@ -2,7 +2,7 @@
 ;;
 ;; Copyright (c) 2012 Roland Walker
 ;;
-;; Author: Roland Walker walker@pobox.com
+;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
 ;; URL: http://raw.github.com/rolandwalker/ucs-utils/master/ucs-utils.el
 ;; Version: 0.6.4
