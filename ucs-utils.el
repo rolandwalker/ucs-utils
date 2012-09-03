@@ -130,6 +130,7 @@
   :version "0.6.4"
   :link '(emacs-commentary-link "ucs-utils")
   :prefix "ucs-utils-"
+  :group 'i18n
   :group 'extensions)
 
 (defcustom ucs-utils-trade-memory-for-speed t
