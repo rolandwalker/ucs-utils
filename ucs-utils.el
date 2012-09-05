@@ -354,6 +354,32 @@ Returns nil if NAME does not exist."
     name))
 
 ;;;###autoload
+(defun ucs-utils-pretty-name (char &optional no-hex)
+  "Return a prettified UCS name for CHAR.
+
+Based on `get-char-code-property'.  The result has been
+title-cased for readability, and will not match into the
+`ucs-names' alist until it has been upcased.
+`ucs-utils-char' can be used on the title-cased name.
+
+Returns a hexified string if no name is found.  If NO-HEX is
+non-nil, then a nil value will be returned when no name is
+found."
+  (let ((name (get-char-code-property char 'name)))
+    (when (equal "<control>" name)
+      (setq name (get-char-code-property char 'old-name)))
+    (when (eq char ?\s)
+      (callf or name "Space"))
+    (cond
+      ((and no-hex
+            (= (length name) 0))
+       (setq name nil))
+      ((= (length name) 0)
+       (setq name (concat "#x" (upcase (format "%02x" char)))))
+      (t
+       (ucs-utils-prettify-ucs-string name)))))
+
+;;;###autoload
 (defun ucs-utils-all-prettified-names (&optional progress regenerate)
   "All prettified UCS names, cached in list `ucs-utils-all-prettified-names'.
 
@@ -467,55 +493,6 @@ symbol."
        (throw 'name name)))))
 
 ;;;###autoload
-(defun ucs-utils-string (sequence &optional fallback test)
-  "Return a string corresponding to SEQUENCE of UCS names or characters.
-
-If SEQUENCE is a single string, it will be coerced to a list of
-length 1.  Each name in SEQUENCE is matched leniently by
-`ucs-utils--lookup'.
-
-FALLBACK should be a sequence of equal length to SEQUENCE, (or
-one of the special symbols described in the next paragraph).  For
-any element of SEQUENCE which does not exist or is not
-displayable according to TEST, that element degrades to the
-corresponding element of FALLBACK.
-
-When FALLBACK is nil or 'drop, characters which do not exist or
-are undisplayable will be silently dropped from the return value.
-When FALLBACK is 'error, such characters cause an error to be
-thrown.
-
-TEST is an optional predicate which characters must pass.  A
-useful value is 'char-displayable-p, which is available as
-the abbreviation 'cdp, unless you have otherwise defined that
-symbol."
-  (callf or fallback 'drop)
-  (concat (ucs-utils-vector sequence fallback test)))
-
-;;;###autoload
-(defun ucs-utils-intact-string (sequence fallback &optional test)
-  "Return a string corresponding to SEQUENCE of UCS names or characters.
-
-This function differs from `ucs-utils-string' in that FALLBACK is
-a non-optional single string, to be used unless every member of
-SEQUENCE exists and passes TEST.  FALLBACK may not be nil, 'error,
-or 'drop as in `ucs-utils-string'.
-
-If SEQUENCE is a single string, it will be coerced to a list of
-length 1.  Each name in SEQUENCE is matched leniently by
-`ucs-utils--lookup'.
-
-TEST is an optional predicate which characters must pass.  A
-useful value is 'char-displayable-p, which is available as
-the abbreviation 'cdp, unless you have otherwise defined that
-symbol."
-  (assert (stringp fallback) nil "FALLBACK must be a string")
-  (condition-case nil
-      (concat (ucs-utils-vector sequence 'error test))
-    (error nil
-           fallback)))
-
-;;;###autoload
 (defun ucs-utils-vector (sequence &optional fallback test no-flatten)
   "Return a vector corresponding to SEQUENCE of UCS names or characters.
 
@@ -582,30 +559,53 @@ if multi-character fallbacks were used as in the example above."
                                                              collect (ucs-utils-char elt back-elt test)))))))
 
 ;;;###autoload
-(defun ucs-utils-pretty-name (char &optional no-hex)
-  "Return a prettified UCS name for CHAR.
+(defun ucs-utils-string (sequence &optional fallback test)
+  "Return a string corresponding to SEQUENCE of UCS names or characters.
 
-Based on `get-char-code-property'.  The result has been
-title-cased for readability, and will not match into the
-`ucs-names' alist until it has been upcased.
-`ucs-utils-char' can be used on the title-cased name.
+If SEQUENCE is a single string, it will be coerced to a list of
+length 1.  Each name in SEQUENCE is matched leniently by
+`ucs-utils--lookup'.
 
-Returns a hexified string if no name is found.  If NO-HEX is
-non-nil, then a nil value will be returned when no name is
-found."
-  (let ((name (get-char-code-property char 'name)))
-    (when (equal "<control>" name)
-      (setq name (get-char-code-property char 'old-name)))
-    (when (eq char ?\s)
-      (callf or name "Space"))
-    (cond
-      ((and no-hex
-            (= (length name) 0))
-       (setq name nil))
-      ((= (length name) 0)
-       (setq name (concat "#x" (upcase (format "%02x" char)))))
-      (t
-       (ucs-utils-prettify-ucs-string name)))))
+FALLBACK should be a sequence of equal length to SEQUENCE, (or
+one of the special symbols described in the next paragraph).  For
+any element of SEQUENCE which does not exist or is not
+displayable according to TEST, that element degrades to the
+corresponding element of FALLBACK.
+
+When FALLBACK is nil or 'drop, characters which do not exist or
+are undisplayable will be silently dropped from the return value.
+When FALLBACK is 'error, such characters cause an error to be
+thrown.
+
+TEST is an optional predicate which characters must pass.  A
+useful value is 'char-displayable-p, which is available as
+the abbreviation 'cdp, unless you have otherwise defined that
+symbol."
+  (callf or fallback 'drop)
+  (concat (ucs-utils-vector sequence fallback test)))
+
+;;;###autoload
+(defun ucs-utils-intact-string (sequence fallback &optional test)
+  "Return a string corresponding to SEQUENCE of UCS names or characters.
+
+This function differs from `ucs-utils-string' in that FALLBACK is
+a non-optional single string, to be used unless every member of
+SEQUENCE exists and passes TEST.  FALLBACK may not be nil, 'error,
+or 'drop as in `ucs-utils-string'.
+
+If SEQUENCE is a single string, it will be coerced to a list of
+length 1.  Each name in SEQUENCE is matched leniently by
+`ucs-utils--lookup'.
+
+TEST is an optional predicate which characters must pass.  A
+useful value is 'char-displayable-p, which is available as
+the abbreviation 'cdp, unless you have otherwise defined that
+symbol."
+  (assert (stringp fallback) nil "FALLBACK must be a string")
+  (condition-case nil
+      (concat (ucs-utils-vector sequence 'error test))
+    (error nil
+           fallback)))
 
 ;;;###autoload
 (defun ucs-utils-subst-char-in-region (start end from-char to-char &optional no-undo)
