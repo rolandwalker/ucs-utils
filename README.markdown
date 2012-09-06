@@ -7,9 +7,9 @@ ucs-utils
 This library provides some utilities for manipulating Unicode
 characters.  There are three interactive commands
 
-	ucs-utils-ucs-insert'       ; ucs-insert workalike using ido-completing-read
-	ucs-utils-eval'             ; the inverse of ucs-insert
-	ucs-utils-install-aliases'  ; install shorter aliases
+	ucs-utils-ucs-insert        ; ucs-insert workalike using ido-completing-read
+	ucs-utils-eval              ; the inverse of ucs-insert
+	ucs-utils-install-aliases   ; install shorter aliases
 
  The other functions are only useful from other Lisp code:
 
