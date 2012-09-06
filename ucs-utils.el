@@ -1036,9 +1036,9 @@ Returns nil if NAME does not exist."
             (remhash key ucs-utils-names-hash))
           (dolist (cell ucs-utils-names-corrections)
             (puthash (car cell) (cdr cell) ucs-utils-names-hash))
-        (persistent-soft-store 'names-hash-emacs-version emacs-version ucs-utils-use-persistent-storage)
-        (persistent-soft-store 'ucs-utils-names-hash ucs-utils-names-hash ucs-utils-use-persistent-storage)
-        (persistent-soft-flush ucs-utils-use-persistent-storage))))
+          (persistent-soft-store 'names-hash-emacs-version emacs-version ucs-utils-use-persistent-storage)
+          (persistent-soft-store 'ucs-utils-names-hash ucs-utils-names-hash ucs-utils-use-persistent-storage)
+          (persistent-soft-flush ucs-utils-use-persistent-storage))))
     (cond
       ((hash-table-p ucs-utils-names-hash)
        (gethash name ucs-utils-names-hash))
