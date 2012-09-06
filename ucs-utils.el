@@ -635,6 +635,8 @@ The character at the position END is not included, matching the
 behavior of `subst-char-in-region'.
 
 This function is slower than `subst-char-in-region'."
+  (setq from-char (ucs-utils-char from-char 'error))
+  (setq to-char   (ucs-utils-char to-char 'error))
   (if no-undo
       (let ((buffer-undo-list nil)
             (modified (buffer-modified-p)))
