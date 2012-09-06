@@ -307,14 +307,14 @@ Returns nil if NAME does not exist."
   (cond
     ((stringp vec)
      (string-to-vector vec))
-    ((or (null vec)
-         (and (sequencep vec)
-              (= 0 (length vec))))
+    ((null vec)
+     (vector nil))
+    ((and (vectorp vec)
+          (= 0 (length vec)))
      nil)
     ((vectorp vec)
-     (let ((elt (aref vec 0)))
-       (setf (aref vec 0) nil)
-       (vconcat (ucs-utils-vector-flatten elt) (ucs-utils-vector-flatten (setq vec (delete nil vec))))))
+     (vconcat (ucs-utils-vector-flatten (aref vec 0))
+              (ucs-utils-vector-flatten (vconcat (cdr (append vec nil))))))
     (t
      (vector vec))))
 
