@@ -219,8 +219,9 @@ of the persistent data store."
     ("HALFWIDTH HANGUL LETTER PIEUP"   . #xFFB2)
     ("HALFWIDTH HANGUL LETTER CIEUC"   . #xFFB8)
     ("SQUARED MV"                      . #x1F14B)
-    ("BELL"                            . #x1F514))
-  "Corrections for ambiguities in `ucs-names', resolved in favor of Unicode 6.1.")
+    ("BELL"                            . #x1F514)
+    ("GRINNING FACE"                   . #x1F600))
+  "Corrections for errors or ambiguities in `ucs-names', resolved in favor of Unicode 6.1.")
 
 ;; note: outside the ucs-utils- namespace
 (defvar character-name-history nil "History of character names entered in the minibuffer.")
