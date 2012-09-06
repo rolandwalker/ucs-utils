@@ -36,8 +36,7 @@ M-x customize-group RET ucs-utils RET
 Compatibility and Requirements
 ------------------------------
 
-Tested on GNU Emacs versions 23.3 and 24.1.  Some characters
-are not supported on Emacs 23.3.
+Tested on GNU Emacs versions 23.3 and 24.1
 
 Requires [persistent-soft.el](http://github.com/rolandwalker/persistent-soft)
 

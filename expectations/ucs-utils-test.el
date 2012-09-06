@@ -72,8 +72,8 @@
   (expect (decode-char 'ucs #x021C)
     (ucs-utils-char "Latin Capital Letter Yogh"))
 
-  ;; new in Unicode 6.0
-  (expect (if (< emacs-major-version 24) nil (decode-char 'ucs #x0841))
+  ;; new in Unicode 6.0 (covered in ucs-utils-6.0-delta.el)
+  (expect (decode-char 'ucs #x0841)
     (ucs-utils-char "Mandaic Letter Ab"))
 
   ;; new in Unicode 6.1 (covered in ucs-utils-names-corrections)
@@ -85,7 +85,7 @@
     (ucs-utils-char "Latin Capital Letter H with Hook"))
 
   ;; plane 1 unicode-smp, new in Unicode 6.0
-  (expect (if (< emacs-major-version 24) nil (decode-char 'ucs #x1F624))
+  (expect (decode-char 'ucs #x1F624)
     (ucs-utils-char "Face with Look of Triumph"))
 
   ;; plane 14 unicode-ssp
@@ -144,7 +144,7 @@
     (ucs-utils-pretty-name (decode-char 'ucs #xB7)))
 
   ;; new in Unicode 6.0
-  (expect (if (< emacs-major-version 24) "#x1F614" "Pensive Face")
+  (expect "Pensive Face"
     (ucs-utils-pretty-name (decode-char 'ucs #x1F614)))
 
   (expect "#xF0000"

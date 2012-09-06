@@ -51,18 +51,13 @@
 ;;
 ;; Compatibility and Requirements
 ;;
-;;    Tested on GNU Emacs versions 23.3 and 24.1.  Some characters
-;;    are not supported on Emacs 23.3.
+;;    Tested on GNU Emacs versions 23.3 and 24.1
 ;;
 ;;    Requires persistent-soft.el
 ;;
 ;;    Uses if present: memoize.el
 ;;
 ;; Bugs
-;;
-;;    Because the Unicode 6.1 delta is included here, GNU Emacs 23
-;;    will recognize characters added in Unicode 6.1 without also
-;;    recognizing characters added in Unicode 6.0.
 ;;
 ;; TODO
 ;;
@@ -960,6 +955,10 @@ of the persistent data store."
     ("HUSHED FACE"                                               . #x1F62F)
     ("SLEEPING FACE"                                             . #x1F634))
   "Corrections for ambiguities or omissions in `ucs-names', resolved in favor of Unicode 6.1.")
+
+;; attempt to load Unicode 6.0 characters for Emacs 23.x
+(when (< emacs-major-version 24)
+  (require 'ucs-utils-6.0-delta nil t))
 
 ;; note: outside the ucs-utils- namespace
 (defvar character-name-history nil "History of character names entered in the minibuffer.")
