@@ -1115,6 +1115,8 @@ found."
       (setq name (get-char-code-property char 'old-name)))
     (when (eq char ?\s)
       (callf or name "Space"))
+    (when (= (length name) 0)
+      (setq name (car (rassoc char ucs-utils-names-corrections))))
     (cond
       ((and no-hex
             (= (length name) 0))
