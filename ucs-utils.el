@@ -727,11 +727,15 @@ its UCS name translation."
 (defun ucs-utils-ucs-insert (character &optional count inherit)
   "Insert CHARACTER in COUNT copies, where CHARACTER is a Unicode code point.
 
-Works like `ucs-insert', but uses `ido-completing-read'.
+Works like `ucs-insert', with the following differences
 
-In addition, if `transient-mark-mode' is enabled, and the region
-contains a valid UCS character name, that value is used as the
-character name and the region is replaced.
+   * Uses `ido-completing-read' at the interactive prompt
+
+   * If `transient-mark-mode' is enabled, and the region contains
+     a valid UCS character name, that value is used as the
+     character name and the region is replaced.
+
+   * A UCS character name string may be passed for CHARACTER.
 
 INHERIT is as documented at `ucs-insert'."
   (interactive
@@ -745,7 +749,7 @@ INHERIT is as documented at `ucs-insert'."
       (ucs-utils-read-char-by-name "Unicode (name or hex): " 'ido))
     (prefix-numeric-value current-prefix-arg)
     t))
-  (ucs-insert character count inherit))
+  (ucs-insert (ucs-utils-char character 'error) count inherit))
 
 ;;;###autoload
 (defun ucs-utils-install-aliases ()
