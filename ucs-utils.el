@@ -270,6 +270,12 @@ in favor of later versions of the Unicode spec.  \"BELL\" is
 a famous example of a conflict.
 
 Returns nil if NAME does not exist."
+  (when (and ucs-utils-use-persistent-storage
+             (or (null (persistent-soft-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage))
+                 (version< (persistent-soft-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)
+                           emacs-version)))
+    (setq ucs-utils-names-hash nil)
+    (persistent-soft-store 'ucs-utils-names-hash nil ucs-utils-use-persistent-storage))
   (save-match-data
     (callf upcase name)
     (setq name (replace-regexp-in-string "\\`[ \t\"]+" ""
@@ -293,6 +299,7 @@ Returns nil if NAME does not exist."
             (remhash key ucs-utils-names-hash))
           (dolist (cell ucs-utils-names-corrections)
             (puthash (car cell) (cdr cell) ucs-utils-names-hash))
+        (persistent-soft-store 'names-hash-emacs-version emacs-version ucs-utils-use-persistent-storage)
         (persistent-soft-store 'ucs-utils-names-hash ucs-utils-names-hash ucs-utils-use-persistent-storage)
         (persistent-soft-flush ucs-utils-use-persistent-storage))))
     (cond
@@ -388,6 +395,11 @@ When optional PROGRESS is given, show progress when generating
 cache.
 
 When optional REGENERATE is given, re-generate cache."
+  (when (and ucs-utils-use-persistent-storage
+             (or (null (persistent-soft-fetch 'prettified-names-emacs-version ucs-utils-use-persistent-storage))
+                 (version< (persistent-soft-fetch 'prettified-names-emacs-version ucs-utils-use-persistent-storage)
+                           emacs-version)))
+    (setq regenerate t))
   (when regenerate
     (setq ucs-utils-all-prettified-names nil)
     (persistent-soft-store 'ucs-utils-all-prettified-names nil ucs-utils-use-persistent-storage))
@@ -413,6 +425,7 @@ When optional REGENERATE is given, re-generate cache."
          (setq prev-name name))
        (callf nreverse ucs-utils-all-prettified-names)
        (persistent-soft-store 'ucs-utils-all-prettified-names ucs-utils-all-prettified-names ucs-utils-use-persistent-storage)
+       (persistent-soft-store 'prettified-names-emacs-version emacs-version ucs-utils-use-persistent-storage)
        (persistent-soft-flush ucs-utils-use-persistent-storage)
        (progress-reporter-done reporter))))
   ucs-utils-all-prettified-names)
