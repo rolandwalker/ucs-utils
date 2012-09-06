@@ -481,16 +481,17 @@ TEST is set, in which case it must pass TEST."
 
 ;;;###autoload
 (defun ucs-utils-first-existing-char (sequence &optional test)
-  "Return the first existing element in SEQUENCE of character names.
+  "Return the first existing character from SEQUENCE of character names.
 
 TEST is an optional predicate which characters must pass.  A
 useful value is 'char-displayable-p, which is available as
 the abbreviation 'cdp, unless you have otherwise defined that
 symbol."
- (catch 'name
+ (catch 'char
    (dolist (name sequence)
-     (when (ucs-utils-char name nil test)
-       (throw 'name name)))))
+     (let ((char (ucs-utils-char name nil test)))
+     (when char
+       (throw 'char char))))))
 
 ;;;###autoload
 (defun ucs-utils-vector (sequence &optional fallback test no-flatten)
