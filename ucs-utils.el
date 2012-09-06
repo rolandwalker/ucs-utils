@@ -65,7 +65,7 @@
 ;;
 ;; TODO
 ;;
-;;    accept synonyms on inputs? at least Tab would be nice.
+;;    Accept synonyms on inputs? at least Tab would be nice.
 ;;
 ;;; License
 ;;
@@ -1180,7 +1180,7 @@ Arguments START, END, FROM-CHAR, and TO-CHAR are as documented at
              (insert to-char)
              (delete-char 1))))
 
-;;; external interface
+;;; external interface (plus `ucs-utils-pretty-name' above)
 
 ;;;###autoload
 (defun ucs-utils-char (name &optional fallback test)
@@ -1496,13 +1496,13 @@ INHERIT is as documented at `ucs-insert'."
 
 The following aliases will be installed
 
-   ucs-char                  for   ucs-utils-char
-   ucs-first-existing-char   for   ucs-utils-first-existing-char
-   ucs-string                for   ucs-utils-string
-   ucs-intact-string         for   ucs-utils-intact-string
-   ucs-vector                for   ucs-utils-vector
-   ucs-pretty-name           for   ucs-utils-pretty-name
-   ucs-eval                  for   ucs-utils-eval"
+   `ucs-char'                  for   `ucs-utils-char'
+   `ucs-first-existing-char'   for   `ucs-utils-first-existing-char'
+   `ucs-string'                for   `ucs-utils-string'
+   `ucs-intact-string'         for   `ucs-utils-intact-string'
+   `ucs-vector'                for   `ucs-utils-vector'
+   `ucs-pretty-name'           for   `ucs-utils-pretty-name'
+   `ucs-eval'                  for   `ucs-utils-eval'"
   (interactive)
   (defalias 'ucs-char                 'ucs-utils-char)
   (defalias 'ucs-first-existing-char  'ucs-utils-first-existing-char)
