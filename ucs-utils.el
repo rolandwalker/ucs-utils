@@ -582,7 +582,7 @@ useful value is 'char-displayable-p, which is available as
 the abbreviation 'cdp, unless you have otherwise defined that
 symbol."
   (callf or fallback 'drop)
-  (concat (ucs-utils-vector sequence fallback test)))
+  (concat (delete nil (ucs-utils-vector sequence fallback test))))
 
 ;;;###autoload
 (defun ucs-utils-intact-string (sequence fallback &optional test)
