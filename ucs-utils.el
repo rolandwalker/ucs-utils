@@ -706,7 +706,8 @@ its UCS name translation."
          (insert (concat "\"" (prin1 result) "\""))
          (delete-char 1)))
       (t
-       (pp-display-expression result "*Pp Eval Output*")))))
+       (pp-display-expression result "*Pp Eval Output*")))
+    result))
 
 ;;;###autoload
 (defun ucs-utils-ucs-insert (character &optional count inherit)
