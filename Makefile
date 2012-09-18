@@ -26,4 +26,5 @@ autoloads :
 	$(EMACS) $(EMACS_FLAGS) --eval '(let ((generated-autoload-file "$(WORK_DIR)/loaddefs.el")) (update-directory-autoloads "$(WORK_DIR)"))'
 
 clean :
-	@rm -rf loaddefs.el *.elc *~ */*.elc */*~ $(TEST_DIR)/$(TEST_OUTPUT) $(TEST_DIR)/$(TEST_DATADIR)
+	@rm -f loaddefs.el *.elc *~ */*.elc */*~ $(TEST_DIR)/$(TEST_OUTPUT)
+	@rm -rf '$(TEST_DIR)/$(TEST_DATADIR)'
