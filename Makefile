@@ -8,23 +8,73 @@ EMACS=emacs
 # EMACS=/usr/bin/emacs
 EMACS_FLAGS=-Q --batch
 
+CURL=curl
 WORK_DIR=$(shell pwd)
-TEST_OUTPUT=test.out
-TEST_DIR=expectations
+AUTOLOADS_FILE=$(shell basename `pwd`)-loaddefs.el
+TEST_DIR=ert-tests
 TEST_DATADIR=pcache
+TEST_DEP_1=ert
+TEST_DEP_1_URL=http://bzr.savannah.gnu.org/lh/emacs/emacs-24/download/head:/ert.el-20110112160650-056hnl9qhpjvjicy-2/ert.el
+TEST_DEP_2=pcache
+TEST_DEP_2_URL=https://raw.github.com/sigma/pcache/fa8f863546e2e8f2fc0a70f5cc766a7f584e01b6/pcache.el
+TEST_DEP_3=persistent-soft
+TEST_DEP_3_URL=https://raw.github.com/rolandwalker/persistent-soft/374a63e3cf116f5d2902aa8b253b8c9de298f0a4/persistent-soft.el
 
 build :
-	$(EMACS) $(EMACS_FLAGS) -f batch-byte-compile *.el
+	$(EMACS) $(EMACS_FLAGS) --eval             \
+	    "(progn                                \
+	      (setq byte-compile-error-on-warn t)  \
+	      (batch-byte-compile))" *.el
 
-test :
-	@cd $(TEST_DIR)          && \
-	rm -f $(TEST_OUTPUT)     && \
-	$(EMACS) $(EMACS_FLAGS) -L . -L .. -l el-expectations -f batch-expectations $(TEST_OUTPUT) *.el
-	@test -e $(TEST_DIR)/$(TEST_OUTPUT) && cat $(TEST_DIR)/$(TEST_OUTPUT)
+test-dep-1 :
+	@cd $(TEST_DIR)                                      && \
+	$(EMACS) $(EMACS_FLAGS)  -L . -L .. -l $(TEST_DEP_1) || \
+	(echo "Can't load test dependency $(TEST_DEP_1).el, run 'make downloads' to fetch it" ; exit 1)
+
+test-dep-2 :
+	@cd $(TEST_DIR)                                   && \
+	$(EMACS) $(EMACS_FLAGS)  -L . -L .. --eval           \
+	    "(progn                                          \
+	      (setq package-load-list '(($(TEST_DEP_2) t)))  \
+	      (when (fboundp 'package-initialize)            \
+	       (package-initialize))                         \
+	      (require '$(TEST_DEP_2)))"                  || \
+	(echo "Can't load test dependency $(TEST_DEP_2).el, run 'make downloads' to fetch it" ; exit 1)
+
+test-dep-3 :
+	@cd $(TEST_DIR)                                   && \
+	$(EMACS) $(EMACS_FLAGS)  -L . -L .. --eval           \
+	    "(progn                                          \
+	      (setq package-load-list '(($(TEST_DEP_2) t)    \
+	                                ($(TEST_DEP_3) t)))  \
+	      (when (fboundp 'package-initialize)            \
+	       (package-initialize))                         \
+	      (require '$(TEST_DEP_3)))"                  || \
+	(echo "Can't load test dependency $(TEST_DEP_3).el, run 'make downloads' to fetch it" ; exit 1)
+
+downloads :
+	$(CURL) '$(TEST_DEP_1_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+	$(CURL) '$(TEST_DEP_2_URL)' > $(TEST_DIR)/$(TEST_DEP_2).el
+	$(CURL) '$(TEST_DEP_3_URL)' > $(TEST_DIR)/$(TEST_DEP_3).el
 
 autoloads :
-	$(EMACS) $(EMACS_FLAGS) --eval '(let ((generated-autoload-file "$(WORK_DIR)/loaddefs.el")) (update-directory-autoloads "$(WORK_DIR)"))'
+	$(EMACS) $(EMACS_FLAGS) --eval                       \
+	    "(progn                                          \
+	      (setq generated-autoload-file \"$(WORK_DIR)/$(AUTOLOADS_FILE)\") \
+	      (update-directory-autoloads \"$(WORK_DIR)\"))"
+
+test-autoloads : autoloads
+	@$(EMACS) $(EMACS_FLAGS) -l "./$(AUTOLOADS_FILE)" || echo "failed to load autoloads: $(AUTOLOADS_FILE)"
+
+test : build test-dep-1 test-dep-2 test-dep-3 test-autoloads
+	@cd $(TEST_DIR)                                   && \
+	(for test_lib in *-test.el; do                       \
+	    $(EMACS) $(EMACS_FLAGS) -L . -L .. -l cl -l $(TEST_DEP_1) -l $$test_lib --eval \
+	    "(flet ((ert--print-backtrace (&rest args)       \
+	      (insert \"no backtrace in batch mode\")))      \
+	       (ert-run-tests-batch-and-exit))" || exit 1;   \
+	done)
 
 clean :
-	@rm -f loaddefs.el *.elc *~ */*.elc */*~ $(TEST_DIR)/$(TEST_OUTPUT)
+	@rm -f $(AUTOLOADS_FILE) *.elc *~ */*.elc */*~ $(TEST_DIR)/$(TEST_DEP_1).el $(TEST_DIR)/$(TEST_DEP_2).el $(TEST_DIR)/$(TEST_DEP_3).el
 	@rm -rf '$(TEST_DIR)/$(TEST_DATADIR)'
