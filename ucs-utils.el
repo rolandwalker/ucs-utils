@@ -82,8 +82,6 @@
 ;;
 ;;     Requires persistent-soft.el
 ;;
-;;     Uses if present: memoize.el
-;;
 ;; Bugs
 ;;
 ;; TODO
@@ -133,8 +131,6 @@
 ;; for callf, callf2, assert, flet, loop, gensym
 (require 'cl)
 
-(require 'memoize nil t)
-
 (autoload 'pp                        "pp"              "Output the pretty-printed representation of OBJECT, any Lisp object.")
 (autoload 'pp-display-expression     "pp"              "Prettify and display EXPRESSION in an appropriate way, depending on length.")
 
@@ -143,8 +139,6 @@
 (autoload 'persistent-soft-exists-p  "persistent-soft" "Return t if SYMBOL exists in the LOCATION persistent data store."   t)
 (autoload 'persistent-soft-flush     "persistent-soft" "Flush data for the LOCATION data store to disk."                    t)
 
-(declare-function memoize                          "memoize.el")
-(declare-function memoize-wrap                     "memoize.el")
 (declare-function ucs-utils-orig-read-char-by-name "ucs-utils.el")
 
 ;;; customizable variables
@@ -988,28 +982,8 @@ of the persistent data store."
 ;; note: outside the ucs-utils- namespace
 (defvar character-name-history nil "History of character names entered in the minibuffer.")
 
-;;; compatibility functions
-
-(unless (fboundp 'memoize)
-  ;; by Christopher Wellons <mosquitopsu@gmail.com>
-  (defun memoize (func)
-    "Memoize the given function. If argument is a symbol then
-install the memoized function over the original function."
-    (typecase func
-      (symbol (fset func (memoize-wrap (symbol-function func))) func)
-      (function (memoize-wrap func))))
-  (defun memoize-wrap (func)
-    "Return the memoized version of the given function."
-    (let ((table-sym (gensym))
-          (val-sym (gensym))
-          (args-sym (gensym)))
-      (set table-sym (make-hash-table :test 'equal))
-      `(lambda (&rest ,args-sym)
-         ,(concat (documentation func) "\n(memoized function)")
-         (let ((,val-sym (gethash ,args-sym ,table-sym)))
-           (if ,val-sym
-               ,val-sym
-             (puthash ,args-sym (apply ,func ,args-sym) ,table-sym)))))))
+(defvar ucs-utils-char-mem (make-hash-table :test 'equal)
+  "Memoization data for `ucs-utils-char'.")
 
 ;;; utility functions
 
@@ -1231,7 +1205,13 @@ symbol.
 When NAME is a character, it passes through unchanged, unless
 TEST is set, in which case it must pass TEST."
   (let ((char name)
-        (orig-fallback fallback))
+        (orig-fallback fallback)
+        (args (list name fallback test))
+        (retval nil))
+    (if (and ucs-utils-trade-memory-for-speed
+             (gethash args ucs-utils-char-mem))
+        (gethash args ucs-utils-char-mem)
+      ;; else
     (when (and (eq test 'cdp)
                (not (fboundp 'cdp)))
       (setq test 'char-displayable-p))
@@ -1240,7 +1220,7 @@ TEST is set, in which case it must pass TEST."
     (when (stringp fallback)
       (setq fallback (ucs-utils--lookup fallback))
       (assert (integerp fallback) nil "Invalid fallback: %s" orig-fallback))
-    (cond
+    (setq retval (cond
       ((and (integerp char)
             (or (not test) (funcall test char)))
        char)
@@ -1253,9 +1233,10 @@ TEST is set, in which case it must pass TEST."
        fallback)
       (t
        (assert (integerp fallback) nil "Invalid fallback: %s" orig-fallback)
-       fallback))))
-(when ucs-utils-trade-memory-for-speed
-  (memoize 'ucs-utils-char))
+       fallback)))
+    (when ucs-utils-trade-memory-for-speed
+      (puthash args retval ucs-utils-char-mem))
+    retval)))
 
 ;;;###autoload
 (defun ucs-utils-first-existing-char (sequence &optional test)

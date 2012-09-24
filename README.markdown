@@ -63,5 +63,3 @@ For full Emacs 23.x support, the library `ucs-utils-6.0-delta.el`
 should also be installed.
 
 Requires [persistent-soft.el](http://github.com/rolandwalker/persistent-soft)
-
-Uses if present: [memoize.el](http://github.com/skeeto/emacs-memoize)
