@@ -1547,7 +1547,7 @@ The following aliases will be installed
 ;; mangle-whitespace: t
 ;; require-final-newline: t
 ;; coding: utf-8
-;; byte-compile-warnings: (not cl-functions)
+;; byte-compile-warnings: (not cl-functions redefine)
 ;; End:
 ;;
 ;; LocalWords:  UcsUtils utils eval callf flet YOGH alist ZHAR PHAR
