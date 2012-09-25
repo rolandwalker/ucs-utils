@@ -62,4 +62,4 @@ Tested on GNU Emacs versions 23.3 and 24.1
 For full Emacs 23.x support, the library `ucs-utils-6.0-delta.el`
 should also be installed.
 
-Requires [persistent-soft.el](http://github.com/rolandwalker/persistent-soft)
+Uses if present: [persistent-soft.el](http://github.com/rolandwalker/persistent-soft) (Recommended)
