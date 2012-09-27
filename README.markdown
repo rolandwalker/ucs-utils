@@ -8,19 +8,21 @@ Utilities for Unicode characters in Emacs.
 Quickstart
 ----------
 
-	(require 'ucs-utils)
-
-	(ucs-utils-char "Middle Dot"         ; character to return
-	                ?.                   ; fallback if unavailable
-	                'char-displayable-p) ; test for character to pass
-
-	(ucs-utils-first-existing-char '("White Bullet"
-	                                 "Bullet Operator"
-	                                 "Circled Bullet"
-	                                 "Middle Dot"
-	                                 ?.) 'cdp)
-
-	(ucs-utils-string "Horizontal Ellipsis" '[["..."]])
+```lisp
+(require 'ucs-utils)
+ 
+(ucs-utils-char "Middle Dot"         ; character to return
+                ?.                   ; fallback if unavailable
+                'char-displayable-p) ; test for character to pass
+ 
+(ucs-utils-first-existing-char '("White Bullet"
+                                 "Bullet Operator"
+                                 "Circled Bullet"
+                                 "Middle Dot"
+                                 ?.) 'cdp)
+ 
+(ucs-utils-string "Horizontal Ellipsis" '[["..."]])
+```
 
 ucs-utils
 ---------
