@@ -25,11 +25,14 @@ AUTOLOADS_FILE=$(PACKAGE_NAME)-loaddefs.el
 TEST_DIR=ert-tests
 TEST_DATADIR=pcache
 TEST_DEP_1=ert
-TEST_DEP_1_URL=http://bzr.savannah.gnu.org/lh/emacs/emacs-24/download/head:/ert.el-20110112160650-056hnl9qhpjvjicy-2/ert.el
+TEST_DEP_1_STABLE_URL=http://bzr.savannah.gnu.org/lh/emacs/emacs-24/download/head:/ert.el-20110112160650-056hnl9qhpjvjicy-2/ert.el
+TEST_DEP_1_LATEST_URL=https://raw.github.com/emacsmirror/emacs/master/lisp/emacs-lisp/ert.el
 TEST_DEP_2=pcache
-TEST_DEP_2_URL=https://raw.github.com/sigma/pcache/fa8f863546e2e8f2fc0a70f5cc766a7f584e01b6/pcache.el
+TEST_DEP_2_STABLE_URL=https://raw.github.com/sigma/pcache/fa8f863546e2e8f2fc0a70f5cc766a7f584e01b6/pcache.el
+TEST_DEP_2_LATEST_URL=https://raw.github.com/sigma/pcache/master/pcache.el
 TEST_DEP_3=persistent-soft
-TEST_DEP_3_URL=https://raw.github.com/rolandwalker/persistent-soft/374a63e3cf116f5d2902aa8b253b8c9de298f0a4/persistent-soft.el
+TEST_DEP_3_STABLE_URL=https://raw.github.com/rolandwalker/persistent-soft/374a63e3cf116f5d2902aa8b253b8c9de298f0a4/persistent-soft.el
+TEST_DEP_3_LATEST_URL=https://raw.github.com/rolandwalker/persistent-soft/master/persistent-soft.el
 
 build :
 	$(EMACS) $(EMACS_BATCH) --eval             \
@@ -64,9 +67,14 @@ test-dep-3 :
 	(echo "Can't load test dependency $(TEST_DEP_3).el, run 'make downloads' to fetch it" ; exit 1)
 
 downloads :
-	$(CURL) '$(TEST_DEP_1_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
-	$(CURL) '$(TEST_DEP_2_URL)' > $(TEST_DIR)/$(TEST_DEP_2).el
-	$(CURL) '$(TEST_DEP_3_URL)' > $(TEST_DIR)/$(TEST_DEP_3).el
+	$(CURL) '$(TEST_DEP_1_STABLE_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+	$(CURL) '$(TEST_DEP_2_STABLE_URL)' > $(TEST_DIR)/$(TEST_DEP_2).el
+	$(CURL) '$(TEST_DEP_3_STABLE_URL)' > $(TEST_DIR)/$(TEST_DEP_3).el
+
+downloads-latest :
+	$(CURL) '$(TEST_DEP_1_LATEST_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+	$(CURL) '$(TEST_DEP_2_LATEST_URL)' > $(TEST_DIR)/$(TEST_DEP_2).el
+	$(CURL) '$(TEST_DEP_3_LATEST_URL)' > $(TEST_DIR)/$(TEST_DEP_3).el
 
 autoloads :
 	$(EMACS) $(EMACS_BATCH) --eval                       \
