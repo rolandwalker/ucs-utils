@@ -35,6 +35,10 @@ TEST_DEP_3=persistent-soft
 TEST_DEP_3_STABLE_URL=https://raw.github.com/rolandwalker/persistent-soft/374a63e3cf116f5d2902aa8b253b8c9de298f0a4/persistent-soft.el
 TEST_DEP_3_LATEST_URL=https://raw.github.com/rolandwalker/persistent-soft/master/persistent-soft.el
 
+.PHONY : build downloads downloads-latest autoloads test-autoloads test-travis \
+         test test-interactive clean edit test-dep-1 test-dep-2 test-dep-3     \
+         test-dep-4 test-dep-5 test-dep-6 test-dep-7 test-dep-8 test-dep-9
+
 build :
 	$(EMACS) $(EMACS_BATCH) --eval             \
 	    "(progn                                \
