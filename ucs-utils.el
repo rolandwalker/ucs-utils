@@ -1516,7 +1516,10 @@ INHERIT is as documented at `ucs-insert'."
       (ucs-utils-read-char-by-name "Unicode (name or hex): " 'ido))
     (prefix-numeric-value current-prefix-arg)
     t))
-  (ucs-insert (ucs-utils-char character 'error) count inherit))
+  (let ((insert-func 'ucs-insert))
+    (when (get insert-func 'byte-obsolete-info)
+      (setq insert-func 'insert-char))
+    (funcall insert-func (ucs-utils-char character 'error) count inherit)))
 
 ;;;###autoload
 (defun ucs-utils-install-aliases ()
