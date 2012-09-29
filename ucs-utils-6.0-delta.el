@@ -8,7 +8,7 @@
 ;; Version: 1.0.0
 ;; Last-Updated:  6 Sep 2012
 ;; EmacsWiki: UcsUtils
-;; Keywords:
+;; Keywords: i18n, extensions
 ;;
 ;; Simplified BSD License
 ;;
@@ -26,10 +26,6 @@
 ;;     M-x customize-group RET ucs-utils RET
 ;;
 ;; Notes
-;;
-;; Compatibility and Requirements
-;;
-;;     Tested on GNU Emacs versions 23.3 and 24.1
 ;;
 ;; Bugs
 ;;
