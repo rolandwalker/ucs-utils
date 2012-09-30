@@ -374,7 +374,7 @@
 
 (ert-deftest ucs-utils-subst-char-in-region-01 nil
   (should (equal "testing..."
-                 (with-current-buffer "*scratch*"
+                 (with-temp-buffer
                    (goto-char (point-min))
                    (insert "testing···\n")
                    (goto-char (point-min))
@@ -383,7 +383,7 @@
 
 (ert-deftest ucs-utils-subst-char-in-region-02 nil
   (should (equal "testing..."
-                 (with-current-buffer "*scratch*"
+                 (with-temp-buffer
                    (goto-char (point-min))
                    (insert "testing···\n")
                    (goto-char (point-min))
@@ -394,7 +394,7 @@
 ;;
 ;; (ert-deftest ucs-utils-subst-char-in-region-03 nil
 ;;   (should (equal "testing..."
-;;                  (with-current-buffer "*scratch*"
+;;                  (with-temp-buffer
 ;;                    (goto-char (point-min))
 ;;                    (insert "testing···\n")
 ;;                    (goto-char (point-min))
@@ -404,7 +404,7 @@
 ;;
 ;; (ert-deftest ucs-utils-subst-char-in-region-04 nil
 ;;   (should (equal "testing..."
-;;                  (with-current-buffer "*scratch*"
+;;                  (with-temp-buffer
 ;;                    (goto-char (point-min))
 ;;                    (insert "testing···\n")
 ;;                    (goto-char (point-min))
@@ -417,7 +417,7 @@
 
 (ert-deftest ucs-utils-eval-01 nil
   (should (equal "Middle Dot"
-                 (with-current-buffer "*scratch*"
+                 (with-temp-buffer
                    (goto-char (point-min))
                    (insert "·\n")
                    (goto-char (point-min))
@@ -427,7 +427,7 @@
 ;;     in batch mode
 (ert-deftest ucs-utils-eval-02 nil
   (should (equal "\"Middle Dot\""
-                 (with-current-buffer "*scratch*"
+                 (with-temp-buffer
                    (goto-char (point-min))
                    (insert "·\n")
                    (goto-char (point-min))
@@ -438,7 +438,7 @@
 
 (ert-deftest ucs-utils-ucs-insert-01 nil
   (should (equal "···"
-                 (with-current-buffer "*scratch*"
+                 (with-temp-buffer
                    (goto-char (point-min))
                    (ucs-utils-ucs-insert (ucs-utils-char "Middle Dot") 3)
                    (insert "\n")
@@ -447,7 +447,7 @@
 
 (ert-deftest ucs-utils-ucs-insert-02 nil
   (should (equal "···"
-                 (with-current-buffer "*scratch*"
+                 (with-temp-buffer
                    (goto-char (point-min))
                    (ucs-utils-ucs-insert "Middle Dot" 3)
                    (insert "\n")
