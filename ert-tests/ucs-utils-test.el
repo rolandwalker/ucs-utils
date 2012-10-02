@@ -391,26 +391,27 @@
                    (buffer-substring-no-properties (point-min) (line-end-position))))))
 
 ;; todo undo does not work
-;;
-;; (ert-deftest ucs-utils-subst-char-in-region-03 nil
-;;   (should (equal "testing..."
-;;                  (with-temp-buffer
-;;                    (goto-char (point-min))
-;;                    (insert "testing···\n")
-;;                    (goto-char (point-min))
-;;                    (ucs-utils-subst-char-in-region (point-min) (line-end-position) (ucs-utils-char "Middle Dot") ?.)
-;;                    (undo 1)
-;;                    (buffer-substring-no-properties (point-min) (line-end-position))))))
-;;
-;; (ert-deftest ucs-utils-subst-char-in-region-04 nil
-;;   (should (equal "testing..."
-;;                  (with-temp-buffer
-;;                    (goto-char (point-min))
-;;                    (insert "testing···\n")
-;;                    (goto-char (point-min))
-;;                    (ucs-utils-subst-char-in-region (point-min) (line-end-position) (ucs-utils-char "Middle Dot") ?. 'noundo)
-;;                    (undo 1)
-;;                    (buffer-substring-no-properties (point-min) (line-end-position))))))
+(ert-deftest ucs-utils-subst-char-in-region-03 nil
+  :expected-result :failed
+  (should (equal "testing..."
+                 (with-temp-buffer
+                   (goto-char (point-min))
+                   (insert "testing···\n")
+                   (goto-char (point-min))
+                   (ucs-utils-subst-char-in-region (point-min) (line-end-position) (ucs-utils-char "Middle Dot") ?.)
+                   (undo 1)
+                   (buffer-substring-no-properties (point-min) (line-end-position))))))
+
+(ert-deftest ucs-utils-subst-char-in-region-04 nil
+  :expected-result :failed
+  (should (equal "testing..."
+                 (with-temp-buffer
+                   (goto-char (point-min))
+                   (insert "testing···\n")
+                   (goto-char (point-min))
+                   (ucs-utils-subst-char-in-region (point-min) (line-end-position) (ucs-utils-char "Middle Dot") ?. 'noundo)
+                   (undo 1)
+                   (buffer-substring-no-properties (point-min) (line-end-position))))))
 
 
 ;;; ucs-utils-eval
