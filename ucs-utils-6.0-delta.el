@@ -14,10 +14,10 @@
 ;;
 ;;; Commentary:
 ;;
-;; This library is automatically loaded by ucs-utils.el for Emacs 23
-;; or lower, so that characters added in Unicode 6.0 may be recognized.
+;; This library is automatically loaded by ucs-utils.el for Emacs 23.x,
+;; so that characters added in Unicode 6.0 may be recognized.
 ;;
-;; If loaded manually, it must be loaded after ucs-utils.el.
+;; If loaded manually, this file must be loaded after ucs-utils.el.
 ;;
 ;; This library is not required for Emacs 24.1 and above.
 ;;
