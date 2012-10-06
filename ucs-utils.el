@@ -1174,6 +1174,15 @@ When optional REGENERATE is given, re-generate cache."
                  (version< (persistent-softest-fetch 'prettified-names-emacs-version ucs-utils-use-persistent-storage)
                            emacs-version)))
     (setq regenerate t))
+  (when (and ucs-utils-use-persistent-storage
+             (not (stringp (persistent-softest-fetch 'ucs-utils-data-version ucs-utils-use-persistent-storage))))
+    (setq regenerate t))
+  (when (and ucs-utils-use-persistent-storage
+             (stringp (persistent-softest-fetch 'ucs-utils-data-version ucs-utils-use-persistent-storage))
+             (version<
+              (persistent-softest-fetch 'ucs-utils-data-version ucs-utils-use-persistent-storage)
+              (get 'ucs-utils 'custom-version)))
+    (setq regenerate t))
   (when regenerate
     (setq ucs-utils-all-prettified-names nil)
     (persistent-softest-store 'ucs-utils-all-prettified-names nil ucs-utils-use-persistent-storage))
@@ -1201,6 +1210,7 @@ When optional REGENERATE is given, re-generate cache."
        (let ((persistent-soft-inhibit-sanity-checks t))
          (persistent-softest-store 'ucs-utils-all-prettified-names ucs-utils-all-prettified-names ucs-utils-use-persistent-storage))
        (persistent-softest-store 'prettified-names-emacs-version emacs-version ucs-utils-use-persistent-storage)
+       (persistent-softest-store 'ucs-utils-data-version (get 'ucs-utils 'custom-version) ucs-utils-use-persistent-storage)
        (persistent-softest-flush ucs-utils-use-persistent-storage)
        (progress-reporter-done reporter))))
   ucs-utils-all-prettified-names)
