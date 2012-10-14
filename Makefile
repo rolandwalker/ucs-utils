@@ -36,9 +36,12 @@ TEST_DEP_1_LATEST_URL=https://raw.github.com/emacsmirror/emacs/master/lisp/emacs
 TEST_DEP_2=pcache
 TEST_DEP_2_STABLE_URL=https://raw.github.com/sigma/pcache/fa8f863546e2e8f2fc0a70f5cc766a7f584e01b6/pcache.el
 TEST_DEP_2_LATEST_URL=https://raw.github.com/sigma/pcache/master/pcache.el
-TEST_DEP_3=persistent-soft
-TEST_DEP_3_STABLE_URL=https://raw.github.com/rolandwalker/persistent-soft/de0d196c94a7d124d0acfa13228648d74cf2315f/persistent-soft.el
-TEST_DEP_3_LATEST_URL=https://raw.github.com/rolandwalker/persistent-soft/master/persistent-soft.el
+TEST_DEP_3=list-utils
+TEST_DEP_3_STABLE_URL=https://raw.github.com/rolandwalker/list-utils/a34f1d5c0be3faadd76680509e958797a60c0a41/list-utils.el
+TEST_DEP_3_LATEST_URL=https://raw.github.com/rolandwalker/list-utils/master/list-utils.el
+TEST_DEP_4=persistent-soft
+TEST_DEP_4_STABLE_URL=https://raw.github.com/rolandwalker/persistent-soft/de0d196c94a7d124d0acfa13228648d74cf2315f/persistent-soft.el
+TEST_DEP_4_LATEST_URL=https://raw.github.com/rolandwalker/persistent-soft/master/persistent-soft.el
 
 .PHONY : build downloads downloads-latest autoloads test-autoloads test-travis \
  test test-prep test-batch test-interactive test-tests clean edit run-pristine \
@@ -71,22 +74,35 @@ test-dep-3 :
 	@cd '$(TEST_DIR)'                                 && \
 	$(RESOLVED_EMACS) $(EMACS_BATCH)  -L . -L .. --eval  \
 	    "(progn                                          \
-	      (setq package-load-list '(($(TEST_DEP_2) t)    \
-	                                ($(TEST_DEP_3) t)))  \
+	      (setq package-load-list '(($(TEST_DEP_3) t)))  \
 	      (when (fboundp 'package-initialize)            \
 	       (package-initialize))                         \
 	      (require '$(TEST_DEP_3)))"                  || \
 	(echo "Can't load test dependency $(TEST_DEP_3).el, run 'make downloads' to fetch it" ; exit 1)
 
+test-dep-4 :
+	@cd '$(TEST_DIR)'                                 && \
+	$(RESOLVED_EMACS) $(EMACS_BATCH)  -L . -L .. --eval  \
+	    "(progn                                          \
+	      (setq package-load-list '(($(TEST_DEP_2) t)    \
+					($(TEST_DEP_3) t)    \
+					($(TEST_DEP_4) t)))  \
+	      (when (fboundp 'package-initialize)            \
+	       (package-initialize))                         \
+	      (require '$(TEST_DEP_4)))"                  || \
+	(echo "Can't load test dependency $(TEST_DEP_4).el, run 'make downloads' to fetch it" ; exit 1)
+
 downloads :
 	$(CURL) '$(TEST_DEP_1_STABLE_URL)' > '$(TEST_DIR)/$(TEST_DEP_1).el'
 	$(CURL) '$(TEST_DEP_2_STABLE_URL)' > '$(TEST_DIR)/$(TEST_DEP_2).el'
 	$(CURL) '$(TEST_DEP_3_STABLE_URL)' > '$(TEST_DIR)/$(TEST_DEP_3).el'
+	$(CURL) '$(TEST_DEP_4_STABLE_URL)' > '$(TEST_DIR)/$(TEST_DEP_4).el'
 
 downloads-latest :
 	$(CURL) '$(TEST_DEP_1_LATEST_URL)' > '$(TEST_DIR)/$(TEST_DEP_1).el'
 	$(CURL) '$(TEST_DEP_2_LATEST_URL)' > '$(TEST_DIR)/$(TEST_DEP_2).el'
 	$(CURL) '$(TEST_DEP_3_LATEST_URL)' > '$(TEST_DIR)/$(TEST_DEP_3).el'
+	$(CURL) '$(TEST_DEP_4_LATEST_URL)' > '$(TEST_DIR)/$(TEST_DEP_4).el'
 
 autoloads :
 	$(RESOLVED_EMACS) $(EMACS_BATCH) --eval              \
@@ -104,7 +120,7 @@ test-travis :
 test-tests :
 	@perl -ne 'if (m/^\s*\(\s*ert-deftest\s*(\S+)/) {die "$$1 test name duplicated in $$ARGV\n" if $$dupes{$$1}++}' '$(TEST_DIR)/'*-test.el
 
-test-prep : build test-dep-1 test-dep-2 test-dep-3 test-autoloads test-travis test-tests
+test-prep : build test-dep-1 test-dep-2 test-dep-3 test-dep-4 test-autoloads test-travis test-tests
 
 test-batch :
 	@cd '$(TEST_DIR)'                                 && \
