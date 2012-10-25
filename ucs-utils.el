@@ -1503,7 +1503,7 @@ its UCS name translation."
     (assert result nil "Failed to find name for character at: %s" pos)
     (cond
       ((equal arg '(4))
-       (cl-flet ((frame-width (&rest args) 0))
+       (cl-flet ((frame-width (&rest _ignored) 0))
          (pp-display-expression result "*Pp Eval Output*")))
       ((consp arg)
        (if (and (not pos)
