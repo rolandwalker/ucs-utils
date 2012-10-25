@@ -40,7 +40,7 @@
 ;; Some ambiguities in Emacs' built-in Unicode data are resolved, and
 ;; character support is updated to Unicode 6.1.
 ;;
-;; There are three interactive commands
+;; There are three interactive commands:
 ;;
 ;;     `ucs-utils-ucs-insert'       ; `ucs-insert' workalike using ido
 ;;     `ucs-utils-eval'             ; the inverse of `ucs-insert'
