@@ -74,7 +74,7 @@
 ;;
 
 (eval-when-compile
-  ;; declarations for byte compiler
+  ;; declarations
   (defvar ucs-utils-names-corrections))
 
 (when (and (not (assoc "CYRILLIC CAPITAL LETTER SHHA WITH DESCENDER" ucs-utils-names-corrections))

@@ -135,7 +135,7 @@
 ;;; Code:
 ;;
 
-;;; requires
+;;; requirements
 
 (eval-and-compile
   ;; for callf, callf2, assert, flet/cl-flet, loop, gensym
@@ -154,6 +154,8 @@
 (autoload 'persistent-soft-flush             "persistent-soft" "Flush data for the LOCATION data store to disk."                     )
 (autoload 'persistent-soft-location-readable "persistent-soft" "Return non-nil if LOCATION is a readable persistent-soft data store.")
 (autoload 'persistent-soft-location-destroy  "persistent-soft" "Destroy LOCATION (a persistent-soft data store)."                    )
+
+;;; declarations
 
 (declare-function ucs-utils-orig-read-char-by-name "ucs-utils.el")
 
