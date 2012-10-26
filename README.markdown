@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/rolandwalker/ucs-utils.png)](http://travis-ci.org/rolandwalker/ucs-utils)
+[![Build Status](https://secure.travis-ci.org/rolandwalker/ucs-utils.png?branch=master)](http://travis-ci.org/rolandwalker/ucs-utils)
 
 Overview
 =========
