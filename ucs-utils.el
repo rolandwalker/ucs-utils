@@ -138,12 +138,12 @@
 ;;; requirements
 
 (eval-and-compile
-  ;; for callf, callf2, assert, flet/cl-flet, loop, gensym
+  ;; for callf, callf2, assert, flet/cl-flet*, loop, gensym
   (require 'cl)
-  (unless (fboundp 'cl-flet)
-    (defalias 'cl-flet 'flet)
-    (put 'cl-flet 'lisp-indent-function 1)
-    (put 'cl-flet 'edebug-form-spec '((&rest (defun*)) cl-declarations body))))
+  (unless (fboundp 'cl-flet*)
+    (defalias 'cl-flet* 'flet)
+    (put 'cl-flet* 'lisp-indent-function 1)
+    (put 'cl-flet* 'edebug-form-spec '((&rest (defun*)) cl-declarations body))))
 
 (autoload 'pp                        "pp"              "Output the pretty-printed representation of OBJECT, any Lisp object.")
 (autoload 'pp-display-expression     "pp"              "Prettify and display EXPRESSION in an appropriate way, depending on length.")
@@ -1503,7 +1503,7 @@ its UCS name translation."
     (assert result nil "Failed to find name for character at: %s" pos)
     (cond
       ((equal arg '(4))
-       (cl-flet ((frame-width (&rest _ignored) 0))
+       (cl-flet* ((frame-width (&rest _ignored) 0))
          (pp-display-expression result "*Pp Eval Output*")))
       ((consp arg)
        (if (and (not pos)
