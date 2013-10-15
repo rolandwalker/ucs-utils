@@ -166,7 +166,7 @@
   "Utilities for Unicode characters."
   :version "0.7.2"
   :link '(emacs-commentary-link :tag "Commentary" "ucs-utils")
-  :link '(url-link :tag "Github" "http://github.com/rolandwalker/ucs-utils")
+  :link '(url-link :tag "GitHub" "http://github.com/rolandwalker/ucs-utils")
   :link '(url-link :tag "EmacsWiki" "http://emacswiki.org/emacs/UcsUtils")
   :prefix "ucs-utils-"
   :group 'i18n
