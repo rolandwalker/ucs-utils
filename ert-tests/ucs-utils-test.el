@@ -105,6 +105,11 @@
   (should (eq (decode-char 'ucs #x20BA)
               (ucs-utils-char "Turkish Lira Sign"))))
 
+;; new in Unicode 6.3 (covered in ucs-utils-names-corrections)
+(ert-deftest ucs-utils-char-14 nil
+  (should (eq (decode-char 'ucs #x2066)
+              (ucs-utils-char "Left-to-Right Isolate"))))
+
 
 ;;; ucs-utils-vector-flatten
 
@@ -179,6 +184,11 @@
 (ert-deftest ucs-utils-pretty-name-05 nil
   (should (equal "Turkish Lira Sign"
                  (ucs-utils-pretty-name (decode-char 'ucs #x20BA)))))
+
+;; new in Unicode 6.3
+(ert-deftest ucs-utils-pretty-name-06 nil
+  (should (equal "Left-to-Right Isolate"
+                 (ucs-utils-pretty-name (decode-char 'ucs #x2066)))))
 
 
 ;;; ucs-utils-all-prettified-names
