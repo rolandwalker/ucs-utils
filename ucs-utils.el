@@ -38,7 +38,7 @@
 ;; when Unicode display is not possible.
 ;;
 ;; Some ambiguities in Emacs' built-in Unicode data are resolved, and
-;; character support is updated to Unicode 6.1.
+;; character support is updated to Unicode 6.2.
 ;;
 ;; There are three interactive commands:
 ;;
@@ -992,8 +992,10 @@ of the persistent data store."
     ("GRIMACING FACE"                                            . #x1F62C)
     ("FACE WITH OPEN MOUTH"                                      . #x1F62E)
     ("HUSHED FACE"                                               . #x1F62F)
-    ("SLEEPING FACE"                                             . #x1F634))
-  "Corrections for ambiguities or omissions in `ucs-names', resolved in favor of Unicode 6.1.")
+    ("SLEEPING FACE"                                             . #x1F634)
+    ;; Unicode 6.1 to 6.2 delta
+    ("TURKISH LIRA SIGN"                                         . #x20BA))
+  "Corrections for ambiguities or omissions in `ucs-names', resolved in favor of Unicode 6.2.")
 
 ;; attempt to load Unicode 6.0 characters for Emacs 23.x
 (when (< emacs-major-version 24)

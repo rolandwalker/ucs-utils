@@ -100,6 +100,11 @@
   (should (eq (decode-char 'ucs #xE0154)
               (ucs-utils-char "Variation Selector-101"))))
 
+;; new in Unicode 6.2 (covered in ucs-utils-names-corrections)
+(ert-deftest ucs-utils-char-13 nil
+  (should (eq (decode-char 'ucs #x20BA)
+              (ucs-utils-char "Turkish Lira Sign"))))
+
 
 ;;; ucs-utils-vector-flatten
 
@@ -169,6 +174,11 @@
 (ert-deftest ucs-utils-pretty-name-04 nil
   (should-not
    (ucs-utils-pretty-name (decode-char 'ucs #xF0000) 'no-hex)))
+
+;; new in Unicode 6.2
+(ert-deftest ucs-utils-pretty-name-05 nil
+  (should (equal "Turkish Lira Sign"
+                 (ucs-utils-pretty-name (decode-char 'ucs #x20BA)))))
 
 
 ;;; ucs-utils-all-prettified-names

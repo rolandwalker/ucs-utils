@@ -32,7 +32,7 @@ characters, with integrated ability to return fallback characters
 when Unicode display is not possible.
 
 Some ambiguities in Emacs' built-in Unicode data are resolved, and
-character support is updated to Unicode 6.1.
+character support is updated to Unicode 6.2.
 
 There are three interactive commands:
 
