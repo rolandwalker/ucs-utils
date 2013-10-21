@@ -138,12 +138,8 @@
 ;;; requirements
 
 (eval-and-compile
-  ;; for callf, callf2, assert, flet/cl-flet*, loop, gensym
-  (require 'cl)
-  (unless (fboundp 'cl-flet*)
-    (defalias 'cl-flet* 'flet)
-    (put 'cl-flet* 'lisp-indent-function 1)
-    (put 'cl-flet* 'edebug-form-spec '((&rest (defun*)) cl-declarations body))))
+  ;; for callf, callf2, assert, loop, gensym
+  (require 'cl))
 
 (autoload 'pp                        "pp"              "Output the pretty-printed representation of OBJECT, any Lisp object.")
 (autoload 'pp-display-expression     "pp"              "Prettify and display EXPRESSION in an appropriate way, depending on length.")
@@ -1013,6 +1009,23 @@ of the persistent data store."
 (defvar ucs-utils-char-mem (make-hash-table :test 'equal)
   "Memoization data for `ucs-utils-char'.")
 
+;;; macros
+
+(defmacro ucs-utils--with-mocked-function (func ret-val &rest body)
+  "Execute BODY, mocking FUNC (a symbol) to unconditionally return RET-VAL.
+
+This is portable to versions of Emacs without dynamic `flet`."
+  (declare (debug t) (indent 2))
+  (let ((o (gensym "--function--")))
+    `(let ((,o (symbol-function ,func)))
+       (fset ,func #'(lambda (&rest _ignored) ,ret-val))
+       (condition-case err
+           (prog1 (progn ,@body)
+             (fset ,func ,o))
+         (error
+          (fset ,func ,o)
+          (signal (car err) (cdr err)))))))
+
 ;;; compatibility functions
 
 (unless (fboundp 'string-match-p)
@@ -1520,7 +1533,7 @@ its UCS name translation."
     (assert result nil "Failed to find name for character at: %s" pos)
     (cond
       ((equal arg '(4))
-       (cl-flet* ((frame-width (&rest _ignored) 0))
+       (ucs-utils--with-mocked-function 'frame-width 0
          (pp-display-expression result "*Pp Eval Output*")))
       ((consp arg)
        (if (and (not pos)
