@@ -4,3 +4,4 @@
 /ert-tests/persistent-soft.el
 /ert-tests/test_output/
 *-autoloads.el
+*.elc
