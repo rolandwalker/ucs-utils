@@ -5,3 +5,4 @@
 /ert-tests/test_output/
 *-autoloads.el
 *.elc
+*~
