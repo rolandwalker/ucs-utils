@@ -41,7 +41,7 @@ TEST_DEP_3=list-utils
 TEST_DEP_3_STABLE_URL=https://raw.github.com/rolandwalker/list-utils/ecd6c91c71e37734af9ff4df003cb96b9d236a97/list-utils.el
 TEST_DEP_3_LATEST_URL=https://raw.github.com/rolandwalker/list-utils/master/list-utils.el
 TEST_DEP_4=persistent-soft
-TEST_DEP_4_STABLE_URL=https://raw.github.com/rolandwalker/persistent-soft/de0d196c94a7d124d0acfa13228648d74cf2315f/persistent-soft.el
+TEST_DEP_4_STABLE_URL=https://raw.github.com/rolandwalker/persistent-soft/3529e1c0264326ec9a5ab9e1ed35037012e7fbd6/persistent-soft.el
 TEST_DEP_4_LATEST_URL=https://raw.github.com/rolandwalker/persistent-soft/master/persistent-soft.el
 
 .PHONY : build dist not-dirty pkg-version downloads downloads-latest autoloads \
