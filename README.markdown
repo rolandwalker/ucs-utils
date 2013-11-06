@@ -56,7 +56,7 @@ See Also
 
 M-x customize-group RET ucs-utils RET
 
-[http://en.wikipedia.org/wiki/Universal_Character_Set](http://en.wikipedia.org/wiki/Universal_Character_Set)
+<http://en.wikipedia.org/wiki/Universal_Character_Set>
 
 Compatibility and Requirements
 ------------------------------
