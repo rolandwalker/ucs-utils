@@ -110,6 +110,10 @@
   (should (eq (decode-char 'ucs #x2066)
               (ucs-utils-char "Left-to-Right Isolate"))))
 
+;; large integer is not a character
+(ert-deftest ucs-utils-char-15 nil
+  (should-not (ucs-utils-char 35252544)))
+
 
 ;;; ucs-utils-vector-flatten
 

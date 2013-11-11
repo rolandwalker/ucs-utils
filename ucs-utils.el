@@ -1032,6 +1032,13 @@ This is portable to versions of Emacs without dynamic `flet`."
     (let ((inhibit-changing-match-data t))
       (string-match regexp string start))))
 
+(unless (fboundp 'characterp)
+  (defun characterp (char)
+    "Return non-nil if CHAR is a character."
+    (and (integerp char)
+         (> char 0)
+         (<= char #x3FFFFF))))
+
 (defun persistent-softest-store (symbol value location &optional expiration)
   "Call `persistent-soft-store' but don't fail when library not present."
   (ignore-errors (persistent-soft-store symbol value location expiration)))
@@ -1297,9 +1304,9 @@ TEST is set, in which case it must pass TEST."
         (setq char (ucs-utils--lookup char)))
       (when (stringp fallback)
         (setq fallback (ucs-utils--lookup fallback))
-        (assert (integerp fallback) nil "Invalid fallback: %s" orig-fallback))
+        (assert (characterp fallback) nil "Invalid fallback: %s" orig-fallback))
       (setq retval (cond
-                     ((and (integerp char)
+                     ((and (characterp char)
                            (or (not test) (funcall test char)))
                       char)
                      ((eq fallback 'error)
@@ -1310,7 +1317,7 @@ TEST is set, in which case it must pass TEST."
                      ((vectorp fallback)
                       fallback)
                      (t
-                      (assert (integerp fallback) nil "Invalid fallback: %s" orig-fallback)
+                      (assert (characterp fallback) nil "Invalid fallback: %s" orig-fallback)
                       fallback)))
       (when ucs-utils-trade-memory-for-speed
         (puthash args retval ucs-utils-char-mem))
