@@ -194,6 +194,10 @@
   (should (equal "Left-to-Right Isolate"
                  (ucs-utils-pretty-name (decode-char 'ucs #x2066)))))
 
+;; large integer is not a character
+(ert-deftest ucs-utils-pretty-name-07 nil
+  (should-not (ucs-utils-pretty-name 35252544)))
+
 
 ;;; ucs-utils-all-prettified-names
 

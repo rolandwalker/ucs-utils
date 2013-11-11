@@ -1183,6 +1183,7 @@ title-cased for readability, and will not match into the
 Returns a hexified string if no name is found.  If NO-HEX is
 non-nil, then a nil value will be returned when no name is
 found."
+  (when (characterp char)
   (let ((name (get-char-code-property char 'name)))
     (when (equal "<control>" name)
       (setq name (get-char-code-property char 'old-name)))
@@ -1197,7 +1198,7 @@ found."
       ((= (length name) 0)
        (setq name (concat "#x" (upcase (format "%02x" char)))))
       (t
-       (ucs-utils-prettify-ucs-string name)))))
+         (ucs-utils-prettify-ucs-string name))))))
 
 ;;;###autoload
 (defun ucs-utils-all-prettified-names (&optional progress regenerate)
