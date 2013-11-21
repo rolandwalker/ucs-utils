@@ -346,6 +346,7 @@ of the persistent data store."
     ("TOP HALF SECTION SIGN"                                     . #x2E39)
     ("TWO-EM DASH"                                               . #x2E3A)
     ("THREE-EM DASH"                                             . #x2E3B)
+    ("CJK IDEOGRAPH, LAST"                                       . #x9FCC)
     ("COMBINING CYRILLIC LETTER UKRAINIAN IE"                    . #xA674)
     ("COMBINING CYRILLIC LETTER I"                               . #xA675)
     ("COMBINING CYRILLIC LETTER YI"                              . #xA676)
