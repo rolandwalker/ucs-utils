@@ -207,6 +207,13 @@ This is needed for performance reasons in most cases."
 (defvar ucs-utils-all-prettified-names nil "List of all UCS names, prettified.")
 (defvar persistent-soft-storage-expiration (* 60 60 24 30) "Number of seconds to keep on-disk storage.")
 
+(defvar ucs-utils-names-deletions
+  '(
+    ;; erroneously returned by `get-char-code-property'
+    ("CJK COMPATIBILITY IDEOGRAPH-FA6E"                          . #xFA6E)
+    ("CJK COMPATIBILITY IDEOGRAPH-FA6F"                          . #xFA6F))
+  "Invalid character names.")
+
 (defvar ucs-utils-names-corrections
   '(
     ;; ambiguities
@@ -1081,7 +1088,8 @@ Like function `ucs-names' but with more characters."
   (or ucs-utils-names
       (let ((unicode-ranges
              '((#x000000 . #x00D7FF)
-               (#x00F900 . #x00FFFD)
+               (#x00F900 . #x00FA6D)
+               (#x00FA70 . #x00FFFD)
                (#x010000 . #x0101FF)
                (#x010280 . #x0102DF)
                (#x010300 . #x01034F)
@@ -1125,7 +1133,10 @@ Like function `ucs-names' but with more characters."
                                                   (if (setq name (get-char-code-property char 'name))
                                                       (cons name char)))
                                               (number-sequence (car range) (cdr range))))))
-        (setq ucs-utils-names (list-utils-uniq (tconc names))))))
+        (setq ucs-utils-names (list-utils-uniq (tconc names)))
+        (dolist (cell ucs-utils-names-deletions)
+          (setq ucs-utils-names (delete cell ucs-utils-names)))
+        ucs-utils-names)))
 
 ;; Unfortunately we can't be dash-insensitive b/c UCS names are
 ;; sensitive to dashes eg TIBETAN LETTER -A vs TIBETAN LETTER A
@@ -1256,6 +1267,8 @@ found."
         (setq name (get-char-code-property char 'old-name)))
       (when (eq char ?\s)
         (callf or name "Space"))
+      (when (rassoc char ucs-utils-names-deletions)
+        (setq name nil))
       (when (= (length name) 0)
         (setq name (car (rassoc char ucs-utils-names-corrections))))
       (cond
