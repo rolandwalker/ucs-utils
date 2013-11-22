@@ -1158,7 +1158,7 @@ a famous example of a conflict.
 
 Returns nil if NAME does not exist."
   (when (and ucs-utils-use-persistent-storage
-             (or (null (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage))
+             (or (not (stringp (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)))
                  (version< (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)
                            emacs-version)))
     (setq ucs-utils-names-hash nil)
@@ -1288,7 +1288,7 @@ cache.
 
 When optional REGENERATE is given, re-generate cache."
   (when (and ucs-utils-use-persistent-storage
-             (or (null (persistent-softest-fetch 'prettified-names-emacs-version ucs-utils-use-persistent-storage))
+             (or (not (stringp (persistent-softest-fetch 'prettified-names-emacs-version ucs-utils-use-persistent-storage)))
                  (version< (persistent-softest-fetch 'prettified-names-emacs-version ucs-utils-use-persistent-storage)
                            emacs-version)))
     (setq regenerate t))
