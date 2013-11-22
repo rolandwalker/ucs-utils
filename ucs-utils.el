@@ -1158,9 +1158,12 @@ a famous example of a conflict.
 
 Returns nil if NAME does not exist."
   (when (and ucs-utils-use-persistent-storage
-             (or (not (stringp (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)))
-                 (version< (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)
-                           emacs-version)))
+             (or (or (not (stringp (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)))
+                     (version< (persistent-softest-fetch 'names-hash-emacs-version ucs-utils-use-persistent-storage)
+                               emacs-version))
+                 (or (not (stringp (persistent-softest-fetch 'ucs-utils-data-version ucs-utils-use-persistent-storage)))
+                     (version< (persistent-softest-fetch 'ucs-utils-data-version ucs-utils-use-persistent-storage)
+                               (get 'ucs-utils 'custom-version)))))
     (setq ucs-utils-names-hash nil)
     (persistent-softest-store 'ucs-utils-names-hash nil ucs-utils-use-persistent-storage))
   (save-match-data
@@ -1189,6 +1192,7 @@ Returns nil if NAME does not exist."
           (dolist (cell ucs-utils-names-corrections)
             (puthash (car cell) (cdr cell) ucs-utils-names-hash))
           (persistent-softest-store 'names-hash-emacs-version emacs-version ucs-utils-use-persistent-storage)
+          (persistent-softest-store 'ucs-utils-data-version (get 'ucs-utils 'custom-version) ucs-utils-use-persistent-storage)
           (let ((persistent-soft-inhibit-sanity-checks t))
             (persistent-softest-store 'ucs-utils-names-hash ucs-utils-names-hash ucs-utils-use-persistent-storage))
           (persistent-softest-flush ucs-utils-use-persistent-storage))))
