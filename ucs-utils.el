@@ -1262,15 +1262,14 @@ Returns a hexified string if no name is found.  If NO-HEX is
 non-nil, then a nil value will be returned when no name is
 found."
   (when (characterp char)
-    (let ((name (get-char-code-property char 'name)))
+    (let ((name (or (car (rassoc char ucs-utils-names-corrections))
+                    (get-char-code-property char 'name))))
       (when (equal "<control>" name)
         (setq name (get-char-code-property char 'old-name)))
       (when (eq char ?\s)
         (callf or name "Space"))
       (when (rassoc char ucs-utils-names-deletions)
         (setq name nil))
-      (when (= (length name) 0)
-        (setq name (car (rassoc char ucs-utils-names-corrections))))
       (cond
         ((and no-hex
               (= (length name) 0))
