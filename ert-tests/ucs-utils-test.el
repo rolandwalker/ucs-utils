@@ -45,7 +45,7 @@
 
 (ert-deftest ucs-utils--lookup-05 nil
   (should (eq (decode-char 'ucs #x3408)
-   (ucs-utils--lookup "CJK Ideograph-3408"))))
+   (ucs-utils--lookup "CJK Ideograph 3408"))))
 
 (ert-deftest ucs-utils--lookup-06 nil
   (should-not
@@ -125,7 +125,7 @@
 ;; not covered by `ucs-names'
 (ert-deftest ucs-utils-char-16 nil
   (should (eq (decode-char 'ucs #x3408)
-              (ucs-utils-char "CJK Ideograph-3408"))))
+              (ucs-utils-char "CJK Ideograph 3408"))))
 
 ;; compensate for Emacs bug
 (ert-deftest ucs-utils-char-17 nil
