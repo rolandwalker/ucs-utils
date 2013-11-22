@@ -1170,10 +1170,10 @@ Returns nil if NAME does not exist."
     (callf upcase name)
     (setq name (replace-regexp-in-string "\\<\\(BRAILLE DOTS\\|SELECTOR\\) \\([0-9]+\\)\\'" "\\1-\\2"
                  (replace-regexp-in-string "\\<\\(IDEOGRAPH\\) \\([0-9A-F]+\\)\\'" "\\1-\\2"
-                   (replace-regexp-in-string "\\`[ \t\"]+" ""
-                     (replace-regexp-in-string "[ \t\"]+\\'" ""
-                       (replace-regexp-in-string "[ \t]\\{2,\\}" " "
-                          (replace-regexp-in-string "_" " "  name)))))))
+                   (replace-regexp-in-string "\\`[ \"]+" ""
+                     (replace-regexp-in-string "[ \"]+\\'" ""
+                       (replace-regexp-in-string " \\{2,\\}" " "
+                         (replace-regexp-in-string "[_\t]" " "  name)))))))
     (when (and ucs-utils-trade-memory-for-speed
                (not (hash-table-p ucs-utils-names-hash)))
       (unless (hash-table-p (setq ucs-utils-names-hash (persistent-softest-fetch 'ucs-utils-names-hash ucs-utils-use-persistent-storage)))
