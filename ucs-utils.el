@@ -8,7 +8,7 @@
 ;; Version: 0.7.6
 ;; Last-Updated: 22 Oct 2013
 ;; EmacsWiki: UcsUtils
-;; Package-Requires: ((persistent-soft "0.8.8") (pcache "0.2.3"))
+;; Package-Requires: ((persistent-soft "0.8.8") (pcache "0.2.3") (list-utils "0.4.2"))
 ;; Keywords: i18n, extensions
 ;;
 ;; Simplified BSD License
@@ -138,7 +138,7 @@
 ;;; requirements
 
 (eval-and-compile
-  ;; for callf, callf2, assert, loop, gensym
+  ;; for callf, callf2, assert, loop, gensym, incf, remove-if
   (require 'cl))
 
 (autoload 'pp                        "pp"              "Output the pretty-printed representation of OBJECT, any Lisp object.")
@@ -151,9 +151,14 @@
 (autoload 'persistent-soft-location-readable "persistent-soft" "Return non-nil if LOCATION is a readable persistent-soft data store.")
 (autoload 'persistent-soft-location-destroy  "persistent-soft" "Destroy LOCATION (a persistent-soft data store)."                    )
 
+(autoload 'make-tconc                        "list-utils"      "Create a tconc data structure."                                      )
+(autoload 'tconc-list                        "list-utils"      "Efficiently append LIST to TC."                                      )
+(autoload 'list-utils-uniq                   "list-utils"      "Return a uniquified copy of LIST, preserving order."                 )
+
 ;;; declarations
 
 (declare-function ucs-utils-orig-read-char-by-name "ucs-utils.el")
+(declare-function tconc "list-utils.el")
 
 ;;; customizable variables
 
@@ -188,9 +193,17 @@ of the persistent data store."
           (const :tag "No"   nil))
   :group 'ucs-utils)
 
+(defcustom ucs-utils-hide-numbered-cjk-ideographs t
+  "Hide numbered CJK ideographs from ido-style completion.
+
+This is needed for performance reasons in most cases."
+  :type 'boolean
+  :group 'ucs-utils)
+
 ;;; variables
 
-(defvar ucs-utils-names-hash nil "A hashed copy of the `ucs-names' alist.")
+(defvar ucs-utils-names nil "Alist of cached (CHAR-NAME . CHAR-CODE) pairs, like `ucs-names'.")
+(defvar ucs-utils-names-hash nil "A hashed copy of the `ucs-utils-names' alist.")
 (defvar ucs-utils-all-prettified-names nil "List of all UCS names, prettified.")
 (defvar persistent-soft-storage-expiration (* 60 60 24 30) "Number of seconds to keep on-disk storage.")
 
@@ -1061,6 +1074,59 @@ This is portable to versions of Emacs without dynamic `flet`."
 
 ;;; utility functions
 
+(defun ucs-utils-names ()
+  "Return alist of (CHAR-NAME . CHAR-CODE) pairs cached in `ucs-utils-names'.
+
+Like function `ucs-names' but with more characters."
+  (or ucs-utils-names
+      (let ((unicode-ranges
+             '((#x000000 . #x00D7FF)
+               (#x00F900 . #x00FFFD)
+               (#x010000 . #x0101FF)
+               (#x010280 . #x0102DF)
+               (#x010300 . #x01034F)
+               (#x010380 . #x0103DF)
+               (#x010400 . #x0104AF)
+               (#x010800 . #x01085F)
+               (#x010900 . #x01093F)
+               (#x010980 . #x010A7F)
+               (#x010B00 . #x010B7F)
+               (#x010C00 . #x010C4F)
+               (#x010E60 . #x010E7F)
+               (#x011000 . #x01114F)
+               (#x011180 . #x0111DF)
+               (#x011680 . #x0116CF)
+               (#x012000 . #x01247F)
+               (#x013000 . #x01342F)
+               (#x016800 . #x016A3F)
+               (#x016F00 . #x016F9F)
+               (#x01B000 . #x01B0FF)
+               (#x01D000 . #x01D37F)
+               (#x01D400 . #x01D7FF)
+               (#x01EE00 . #x01F64F)
+               (#x01F680 . #x01F77F)
+               (#x020000 . #x02A6DF)
+               (#x02A700 . #x02B81F)
+               (#x02F800 . #x02FA1F)
+               (#x0E0000 . #x0E007F)
+               (#x0E0100 . #x0E01EF)))
+            (names (make-tconc))
+            (gc-cons-threshold 80000000)
+            (gc-cons-percentage .5)
+            (name nil))
+        (tconc-list names (copy-tree ucs-utils-names-corrections))
+        (dolist (range unicode-ranges)
+          (when (< (car range) #x010000)
+            (tconc-list names (delq nil (mapcar #'(lambda (char)
+                                                    (if (setq name (get-char-code-property char 'old-name))
+                                                        (cons name char)))
+                                                (number-sequence (car range) (cdr range))))))
+          (tconc-list names (delq nil (mapcar #'(lambda (char)
+                                                  (if (setq name (get-char-code-property char 'name))
+                                                      (cons name char)))
+                                              (number-sequence (car range) (cdr range))))))
+        (setq ucs-utils-names (list-utils-uniq (tconc names))))))
+
 ;; Unfortunately we can't be dash-insensitive b/c UCS names are
 ;; sensitive to dashes eg TIBETAN LETTER -A vs TIBETAN LETTER A
 ;; or HANGUL JUNGSEONG O-E vs HANGUL JUNGSEONG OE.
@@ -1096,9 +1162,11 @@ Returns nil if NAME does not exist."
                (not (hash-table-p ucs-utils-names-hash)))
       (unless (hash-table-p (setq ucs-utils-names-hash (persistent-softest-fetch 'ucs-utils-names-hash ucs-utils-use-persistent-storage)))
         (let ((dupes nil)
-              (key nil))
-          (setq ucs-utils-names-hash (make-hash-table :size (length (ucs-names)) :test 'equal))
-          (dolist (cell (ucs-names))
+              (key nil)
+              (gc-cons-threshold 80000000)
+              (gc-cons-percentage .5))
+          (setq ucs-utils-names-hash (make-hash-table :size (length (ucs-utils-names)) :test 'equal))
+          (dolist (cell (ucs-utils-names))
             (setq key (car cell))
             (when (and (gethash key ucs-utils-names-hash)
                        (not (eq (gethash key ucs-utils-names-hash) (cdr cell))))
@@ -1116,10 +1184,8 @@ Returns nil if NAME does not exist."
     (cond
       ((hash-table-p ucs-utils-names-hash)
        (gethash name ucs-utils-names-hash))
-      ((assoc-string name ucs-utils-names-corrections t)
-       (cdr (assoc-string name ucs-utils-names-corrections t)))
       (t
-       (cdr (assoc-string name (ucs-names) t))))))
+       (cdr (assoc-string name (ucs-utils-names) t))))))
 
 (defun ucs-utils-vector-flatten (vec)
   "Flatten vector or string VEC which may contain other vectors or strings."
@@ -1178,7 +1244,7 @@ Returns nil if NAME does not exist."
 
 Based on `get-char-code-property'.  The result has been
 title-cased for readability, and will not match into the
-`ucs-names' alist until it has been upcased.
+`ucs-utils-names' alist until it has been upcased.
 `ucs-utils-char' can be used on the title-cased name.
 
 Returns a hexified string if no name is found.  If NO-HEX is
@@ -1234,11 +1300,13 @@ When optional REGENERATE is given, re-generate cache."
           (consp (setq ucs-utils-all-prettified-names (persistent-softest-fetch 'ucs-utils-all-prettified-names ucs-utils-use-persistent-storage))))
      t)
     (t
-     (let ((reporter (make-progress-reporter "Caching formatted UCS names... " 0 (length (ucs-names))))
+     (let ((reporter (make-progress-reporter "Caching formatted UCS names... " 0 (length (ucs-utils-names))))
            (counter 0)
            (draft-list nil)
-           (prev-name nil))
-       (dolist (cell (ucs-names))
+           (prev-name nil)
+           (gc-cons-threshold 80000000)
+           (gc-cons-percentage .5))
+       (dolist (cell (ucs-utils-names))
          (when progress
            (progress-reporter-update reporter (incf counter)))
          (push (replace-regexp-in-string " " "_" (or (ucs-utils-pretty-name (cdr cell) 'no-hex) "")) draft-list))
@@ -1494,9 +1562,13 @@ run as all completion candidates are pre-generated."
   (if (not ido)
       (ucs-utils-orig-read-char-by-name prompt)
     ;; else
-    (let ((input (ido-completing-read
+    (let* ((gc-cons-threshold 80000000)
+           (gc-cons-percentage .5)
+           (input (ido-completing-read
                   prompt
-                  (ucs-utils-all-prettified-names 'progress) nil nil nil character-name-history)))
+                  (remove-if #'(lambda (x)
+                                 (and ucs-utils-hide-numbered-cjk-ideographs (string-match-p "\\`CJK_Ideograph-[0-9a-f]" x)))
+                             (ucs-utils-all-prettified-names 'progress)) nil nil nil character-name-history)))
       (when (string-match-p "\\`[0-9a-fA-F]+\\'" input)
         (callf2 concat "#x" input))
       (if (string-match-p "\\`#" input)

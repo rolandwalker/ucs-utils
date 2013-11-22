@@ -43,6 +43,10 @@
   (should-not
    (ucs-utils--lookup "Nonexistent Character")))
 
+(ert-deftest ucs-utils--lookup-05 nil
+  (should (eq (decode-char 'ucs #x3408)
+   (ucs-utils--lookup "CJK Ideograph-3408"))))
+
 
 ;;; ucs-utils-char
 
@@ -113,6 +117,11 @@
 ;; large integer is not a character
 (ert-deftest ucs-utils-char-15 nil
   (should-not (ucs-utils-char 35252544)))
+
+;; not covered by `ucs-names'
+(ert-deftest ucs-utils-char-16 nil
+  (should (eq (decode-char 'ucs #x3408)
+              (ucs-utils-char "CJK Ideograph-3408"))))
 
 
 ;;; ucs-utils-vector-flatten
