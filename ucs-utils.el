@@ -1249,6 +1249,10 @@ Returns nil if NAME does not exist."
         (setq name (replace-match "Plus-or-Minus" 'fixed-case 'literal name)))
       (while (string-match "\\<\\(?:Cjk\\|Apl\\|Ocr\\)\\>" name)
         (setq name (replace-match (upcase (match-string-no-properties 0 name)) 'fixed-case 'literal name)))
+      (when (string-match "\\<\\(Ideograph\\)-\\([0-9A-Fa-f]+\\)\\'" name)
+        (setq name (replace-match (concat (match-string-no-properties 1 name)
+                                          "-"
+                                          (upcase (match-string-no-properties 2 name))) 'fixed-case 'literal name)))
       (when (string-match "\\`Nko\\>" name)
         (setq name (replace-match "NKo" 'fixed-case 'literal name))))
     name))
