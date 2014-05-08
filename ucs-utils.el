@@ -1,12 +1,12 @@
 ;;; ucs-utils.el --- Utilities for Unicode characters
 ;;
-;; Copyright (c) 2012-13 Roland Walker
+;; Copyright (c) 2012-14 Roland Walker
 ;;
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
 ;; URL: http://raw.githubusercontent.com/rolandwalker/ucs-utils/master/ucs-utils.el
-;; Version: 0.7.8
-;; Last-Updated: 22 Nov 2013
+;; Version: 0.7.10
+;; Last-Updated:  8 May 2014
 ;; EmacsWiki: UcsUtils
 ;; Package-Requires: ((persistent-soft "0.8.8") (pcache "0.2.3") (list-utils "0.4.2"))
 ;; Keywords: i18n, extensions
@@ -165,7 +165,7 @@
 ;;;###autoload
 (defgroup ucs-utils nil
   "Utilities for Unicode characters."
-  :version "0.7.8"
+  :version "0.7.10"
   :link '(emacs-commentary-link :tag "Commentary" "ucs-utils")
   :link '(url-link :tag "GitHub" "http://github.com/rolandwalker/ucs-utils")
   :link '(url-link :tag "EmacsWiki" "http://emacswiki.org/emacs/UcsUtils")
