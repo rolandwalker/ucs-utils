@@ -4,7 +4,7 @@
 ;;
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
-;; URL: http://raw.github.com/rolandwalker/ucs-utils/master/ucs-utils-6.0-delta.el
+;; URL: http://raw.githubusercontent.com/rolandwalker/ucs-utils/master/ucs-utils-6.0-delta.el
 ;; Version: 1.0.0
 ;; Last-Updated:  6 Sep 2012
 ;; EmacsWiki: UcsUtils
