@@ -1591,7 +1591,7 @@ run as all completion candidates are pre-generated."
                   prompt
                   (remove-if #'(lambda (x)
                                  (and ucs-utils-hide-numbered-cjk-ideographs (string-match-p "_Ideograph[_-][0-9a-fA-F]+\\'" x)))
-                             (ucs-utils-all-prettified-names 'progress)) nil nil nil character-name-history)))
+                             (ucs-utils-all-prettified-names 'progress)) nil nil nil 'character-name-history)))
       (when (string-match-p "\\`[0-9a-fA-F]+\\'" input)
         (callf2 concat "#x" input))
       (if (string-match-p "\\`#" input)
