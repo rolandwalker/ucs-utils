@@ -8,7 +8,7 @@ Utilities for Unicode characters in Emacs.
 Quickstart
 ----------
 
-```lisp
+```elisp
 (require 'ucs-utils)
  
 (ucs-utils-char "Middle Dot"         ; character to return
