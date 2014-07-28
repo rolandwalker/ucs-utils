@@ -50,7 +50,7 @@ The other functions are only useful from other Lisp code:
 
 ## See Also
 
-M-x customize-group RET ucs-utils RET
+<kbd>M-x</kbd> <kbd>customize-group</kbd> <kbd>RET</kbd> <kbd>ucs-utils</kbd> <kbd>RET</kbd>
 
 <http://en.wikipedia.org/wiki/Universal_Character_Set>
 
