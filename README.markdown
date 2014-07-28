@@ -1,12 +1,10 @@
 [![Build Status](https://secure.travis-ci.org/rolandwalker/ucs-utils.png?branch=master)](http://travis-ci.org/rolandwalker/ucs-utils)
 
-Overview
-=========
+# Overview
 
 Utilities for Unicode characters in Emacs.
 
-Quickstart
-----------
+## Quickstart
 
 ```elisp
 (require 'ucs-utils)
@@ -24,8 +22,7 @@ Quickstart
 (ucs-utils-string "Horizontal Ellipsis" '[["..."]])
 ```
 
-Explanation
------------
+## Explanation
 
 This library provides utilities for manipulating Unicode
 characters, with integrated ability to return fallback characters
@@ -51,15 +48,13 @@ The other functions are only useful from other Lisp code:
 	ucs-utils-read-char-by-name
 	ucs-utils-subst-char-in-region
 
-See Also
----------
+## See Also
 
 M-x customize-group RET ucs-utils RET
 
 <http://en.wikipedia.org/wiki/Universal_Character_Set>
 
-Compatibility and Requirements
-------------------------------
+## Compatibility and Requirements
 
 	GNU Emacs version 24.4-devel     : yes, at the time of writing
 	GNU Emacs version 24.3           : yes
