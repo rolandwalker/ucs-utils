@@ -4,6 +4,11 @@
 
 Utilities for Unicode characters in Emacs.
 
+ * [Quickstart](#quickstart)
+ * [Explanation](#explanation)
+ * [See Also](#see-also)
+ * [Compatibility and Requirements](#compatibility-and-requirements)
+
 ## Quickstart
 
 ```elisp
@@ -50,7 +55,7 @@ The other functions are only useful from other Lisp code:
 
 ## See Also
 
-* <kbd>M-x</kbd> <kbd>customize-group</kbd> <kbd>RET</kbd> <kbd>ucs-utils</kbd> <kbd>RET</kbd>
+ * <kbd>M-x</kbd> <kbd>customize-group</kbd> <kbd>RET</kbd> <kbd>ucs-utils</kbd> <kbd>RET</kbd>
 
 <http://en.wikipedia.org/wiki/Universal_Character_Set>
 
