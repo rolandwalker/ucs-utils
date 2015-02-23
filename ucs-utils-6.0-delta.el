@@ -1,6 +1,6 @@
 ;;; ucs-utils-6.0-delta.el --- Unicode 5.2 to 6.0 delta
 ;;
-;; Copyright (c) 2012 Roland Walker
+;; Copyright (c) 2012-2015 Roland Walker
 ;;
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
