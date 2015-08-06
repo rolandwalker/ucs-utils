@@ -101,14 +101,14 @@
 ;; without modification, are permitted provided that the following
 ;; conditions are met:
 ;;
-;;    1. Redistributions of source code must retain the above
-;;       copyright notice, this list of conditions and the following
-;;       disclaimer.
+;;   1. Redistributions of source code must retain the above
+;;      copyright notice, this list of conditions and the following
+;;      disclaimer.
 ;;
-;;    2. Redistributions in binary form must reproduce the above
-;;       copyright notice, this list of conditions and the following
-;;       disclaimer in the documentation and/or other materials
-;;       provided with the distribution.
+;;   2. Redistributions in binary form must reproduce the above
+;;      copyright notice, this list of conditions and the following
+;;      disclaimer in the documentation and/or other materials
+;;      provided with the distribution.
 ;;
 ;; This software is provided by Roland Walker "AS IS" and any express
 ;; or implied warranties, including, but not limited to, the implied
@@ -4504,13 +4504,13 @@ its UCS name translation."
 
 Works like `ucs-insert', with the following differences
 
-   * Uses `ido-completing-read' at the interactive prompt
+    * Uses `ido-completing-read' at the interactive prompt
 
-   * If `transient-mark-mode' is enabled, and the region contains
-     a valid UCS character name, that value is used as the
-     character name and the region is replaced.
+    * If `transient-mark-mode' is enabled, and the region contains
+      a valid UCS character name, that value is used as the
+      character name and the region is replaced.
 
-   * A UCS character name string may be passed for CHARACTER.
+    * A UCS character name string may be passed for CHARACTER.
 
 INHERIT is as documented at `ucs-insert'."
   (interactive
@@ -4533,15 +4533,15 @@ INHERIT is as documented at `ucs-insert'."
 (defun ucs-utils-install-aliases ()
   "Install aliases outside the \"ucs-utils-\" namespace.
 
-The following aliases will be installed
+The following aliases will be installed:
 
-   `ucs-char'                  for   `ucs-utils-char'
-   `ucs-first-existing-char'   for   `ucs-utils-first-existing-char'
-   `ucs-string'                for   `ucs-utils-string'
-   `ucs-intact-string'         for   `ucs-utils-intact-string'
-   `ucs-vector'                for   `ucs-utils-vector'
-   `ucs-pretty-name'           for   `ucs-utils-pretty-name'
-   `ucs-eval'                  for   `ucs-utils-eval'"
+    `ucs-char'                  for   `ucs-utils-char'
+    `ucs-first-existing-char'   for   `ucs-utils-first-existing-char'
+    `ucs-string'                for   `ucs-utils-string'
+    `ucs-intact-string'         for   `ucs-utils-intact-string'
+    `ucs-vector'                for   `ucs-utils-vector'
+    `ucs-pretty-name'           for   `ucs-utils-pretty-name'
+    `ucs-eval'                  for   `ucs-utils-eval'"
   (interactive)
   (defalias 'ucs-char                 'ucs-utils-char)
   (defalias 'ucs-first-existing-char  'ucs-utils-first-existing-char)
