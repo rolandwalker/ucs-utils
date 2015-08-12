@@ -1949,7 +1949,13 @@
            ("ALCHEMICAL SYMBOL FOR DAY-NIGHT"                                                 .  #x1F770)
            ("ALCHEMICAL SYMBOL FOR MONTH"                                                     .  #x1F771)
            ("ALCHEMICAL SYMBOL FOR HALF DRAM"                                                 .  #x1F772)
-           ("ALCHEMICAL SYMBOL FOR HALF OUNCE"                                                .  #x1F773))))
+           ("ALCHEMICAL SYMBOL FOR HALF OUNCE"                                                .  #x1F773)))
+
+  ;; generated names for CJK Unified Ideographs Extension D
+  (nconc ucs-utils-names-corrections
+         (mapcar #'(lambda (x)
+                     (cons (format "CJK IDEOGRAPH-%X" x) x))
+                 (number-sequence #x2B740 #x2B81D))))
 
 (provide 'ucs-utils-6.0-delta)
 
