@@ -82,9 +82,7 @@
 
 (when (and (not (assoc "CYRILLIC CAPITAL LETTER SHHA WITH DESCENDER" ucs-utils-names-corrections))
            (not (assoc "CYRILLIC CAPITAL LETTER SHHA WITH DESCENDER" (ucs-names))))
-  (setq ucs-utils-names-corrections
-        (append
-         ucs-utils-names-corrections
+  (nconc ucs-utils-names-corrections
          '(
            ;; Unicode 5.2 to 6.0 delta
            ("CYRILLIC CAPITAL LETTER SHHA WITH DESCENDER"                                     .  #x0526)
@@ -1951,7 +1949,7 @@
            ("ALCHEMICAL SYMBOL FOR DAY-NIGHT"                                                 .  #x1F770)
            ("ALCHEMICAL SYMBOL FOR MONTH"                                                     .  #x1F771)
            ("ALCHEMICAL SYMBOL FOR HALF DRAM"                                                 .  #x1F772)
-           ("ALCHEMICAL SYMBOL FOR HALF OUNCE"                                                .  #x1F773)))))
+           ("ALCHEMICAL SYMBOL FOR HALF OUNCE"                                                .  #x1F773))))
 
 (provide 'ucs-utils-6.0-delta)
 
