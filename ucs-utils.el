@@ -89,6 +89,10 @@
 ;;
 ;; TODO
 ;;
+;;     Unicode 8.0
+;;
+;;     Namespace cache keys as with font-utils and unicode-utils.
+;;
 ;;     Accept synonyms on inputs? at least Tab would be nice.
 ;;
 ;;     Separate test run without persistent-soft.el
