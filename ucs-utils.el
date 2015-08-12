@@ -4095,7 +4095,7 @@ Returns nil if NAME does not exist."
     (when (string-match "([^()]+?)\\'" name)
       (setq name (replace-match (upcase (match-string-no-properties 0 name)) 'fixed-case 'literal name)))
     (let ((case-fold-search nil))
-      (while (string-match " \\(?:And\\|Or\\|Of\\|On\\|The\\|For\\|In\\|With\\|Over\\|Under\\) " name)
+      (while (string-match " \\(?:And\\|Or\\|Of\\|On\\|The\\|For\\|In\\|With\\|Over\\|Under\\|At\\) " name)
         (setq name (replace-match (downcase (match-string-no-properties 0 name)) 'fixed-case 'literal name)))
       (while (string-match "\\<Logical [Aa]nd\\>" name)
         (setq name (replace-match "Logical AND" 'fixed-case 'literal name)))
