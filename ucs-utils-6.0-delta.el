@@ -73,9 +73,12 @@
 ;;; Code:
 ;;
 
+;;; declarations
+
 (eval-when-compile
-  ;; declarations
   (defvar ucs-utils-names-corrections))
+
+;;; supplement values from main library
 
 (when (and (not (assoc "CYRILLIC CAPITAL LETTER SHHA WITH DESCENDER" ucs-utils-names-corrections))
            (not (assoc "CYRILLIC CAPITAL LETTER SHHA WITH DESCENDER" (ucs-names))))

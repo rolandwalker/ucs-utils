@@ -93,6 +93,21 @@
 ;;
 ;;     Unicode 8.0
 ;;
+;;     generated names for CJK blocks added in Unicode 6.2
+;;         CJK Unified Ideographs
+;;         CJK Unified Ideographs Extension A
+;;         CJK Unified Ideographs Extension C
+;;
+;;     support alternate naming schemes for CJK ideographs
+;;
+;;     support helm or other choosers which are able to cope
+;;     with the entire set of character names, including
+;;     CJK ideographs
+;;
+;;     spin out older portions of ucs-utils-names-corrections
+;;     which are not needed in recent Emacs releases (as with
+;;     ucs-utils-6.0-delta.el)
+;;
 ;;     Namespace cache keys as with font-utils and unicode-utils.
 ;;
 ;;     Accept synonyms on inputs? at least Tab would be nice.
