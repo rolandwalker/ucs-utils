@@ -61,7 +61,9 @@ The other functions are only useful from other Lisp code:
 
 ## Compatibility and Requirements
 
-	GNU Emacs version 24.4-devel     : yes, at the time of writing
+	GNU Emacs version 24.6-devel     : not tested
+	GNU Emacs version 24.5           : not tested
+	GNU Emacs version 24.4           : yes
 	GNU Emacs version 24.3           : yes
 	GNU Emacs version 23.3           : yes (*)
 	GNU Emacs version 22.3 and lower : no
