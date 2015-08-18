@@ -91,6 +91,11 @@
 ;;
 ;; TODO
 ;;
+;;     Accept synonyms on inputs? at least Tab would be nice.
+;;     There is an official list of aliases at
+;;
+;;         http://www.unicode.org/Public/8.0.0/ucd/NameAliases.txt
+;;
 ;;     generated names for CJK blocks added in Unicode 6.2
 ;;         CJK Unified Ideographs
 ;;         CJK Unified Ideographs Extension A
@@ -107,8 +112,6 @@
 ;;     ucs-utils-6.0-delta.el)
 ;;
 ;;     Namespace cache keys as with font-utils and unicode-utils.
-;;
-;;     Accept synonyms on inputs? at least Tab would be nice.
 ;;
 ;;     Separate test run without persistent-soft.el
 ;;
