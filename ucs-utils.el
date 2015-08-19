@@ -299,6 +299,8 @@ This is needed for performance reasons in most cases."
     ("HALFWIDTH HANGUL LETTER CIEUC"                             . #xFFB8)
     ("SQUARED MV"                                                . #x1F14B)
     ("BELL"                                                      . #x1F514)
+    ;; this name is completely made up, to deal with #x1F514 BELL
+    ("ALERT (BEL)"                                               . #x0007)
     ;; other ambiguities, such as a glitch in some Emacs release
     ("TIBETAN LETTER -A"                                         . #x0F60)
     ("TIBETAN SUBJOINED LETTER -A"                               . #x0FB0)
