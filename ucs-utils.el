@@ -6139,37 +6139,37 @@ cache.
 When optional REGENERATE is given, re-generate cache."
   (let* ((cache-id (format "e:%s-l:%s"
                            emacs-version
-              (get 'ucs-utils 'custom-version)))
+                           (get 'ucs-utils 'custom-version)))
          (store-key (intern (format "all-prettified-names-%s" cache-id)))
          (store-place ucs-utils-use-persistent-storage))
-  (when regenerate
-    (setq ucs-utils-all-prettified-names nil)
+    (when regenerate
+      (setq ucs-utils-all-prettified-names nil)
       (persistent-softest-store store-key nil store-place))
-  (cond
-    (ucs-utils-all-prettified-names
-     t)
-    ((and (not regenerate)
+    (cond
+      (ucs-utils-all-prettified-names
+       t)
+      ((and (not regenerate)
             (persistent-softest-exists-p store-key store-place)
             (consp (setq ucs-utils-all-prettified-names
                          (persistent-softest-fetch store-key store-place))))
-     t)
-    (t
-     (let ((reporter (make-progress-reporter "Caching formatted UCS names... " 0 (length (ucs-utils-names))))
-           (counter 0)
-           (draft-list nil)
-           (prev-name nil)
-           (gc-cons-threshold 80000000)
-           (gc-cons-percentage .5))
-       (dolist (cell (ucs-utils-names))
-         (when progress
-           (progress-reporter-update reporter (incf counter)))
-         (push (replace-regexp-in-string " " "_" (or (ucs-utils-pretty-name (cdr cell) 'no-hex) "")) draft-list))
-       (dolist (name (delete "" (sort draft-list 'string<)))
-         (unless (equal name prev-name)
-           (push name ucs-utils-all-prettified-names))
-         (setq prev-name name))
-       (callf nreverse ucs-utils-all-prettified-names)
-       (let ((persistent-soft-inhibit-sanity-checks t))
+       t)
+      (t
+       (let ((reporter (make-progress-reporter "Caching formatted UCS names... " 0 (length (ucs-utils-names))))
+             (counter 0)
+             (draft-list nil)
+             (prev-name nil)
+             (gc-cons-threshold 80000000)
+             (gc-cons-percentage .5))
+         (dolist (cell (ucs-utils-names))
+           (when progress
+             (progress-reporter-update reporter (incf counter)))
+           (push (replace-regexp-in-string " " "_" (or (ucs-utils-pretty-name (cdr cell) 'no-hex) "")) draft-list))
+         (dolist (name (delete "" (sort draft-list 'string<)))
+           (unless (equal name prev-name)
+             (push name ucs-utils-all-prettified-names))
+           (setq prev-name name))
+         (callf nreverse ucs-utils-all-prettified-names)
+         (let ((persistent-soft-inhibit-sanity-checks t))
            (persistent-softest-store store-key
                                      ucs-utils-all-prettified-names
                                      store-place))
