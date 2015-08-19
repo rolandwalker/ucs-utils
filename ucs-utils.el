@@ -246,6 +246,7 @@ This is needed for performance reasons in most cases."
     ("CYRILLIC CAPITAL LETTER I"                                 . #x0418)
     ("CYRILLIC SMALL LETTER I"                                   . #x0438)
     ("CYRILLIC SMALL LETTER E"                                   . #x044D)
+    ("DOUBLE VERTICAL BAR"                                       . #x23F8)
     ("GEORGIAN SMALL LETTER AN"                                  . #x2D00)
     ("GEORGIAN SMALL LETTER BAN"                                 . #x2D01)
     ("GEORGIAN SMALL LETTER GAN"                                 . #x2D02)
