@@ -238,15 +238,14 @@ This is needed for performance reasons in most cases."
 
 (defvar ucs-utils-names-corrections
   '(
-    ;; ambiguities
+    ;; ambiguities: name collisions in various versions of the standard,
+    ;; for which the latest is preferred
     ("LATIN CAPITAL LETTER YOGH"                                 . #x021C)
     ("LATIN SMALL LETTER YOGH"                                   . #x021D)
     ("CYRILLIC CAPITAL LETTER E"                                 . #x042D)
     ("CYRILLIC CAPITAL LETTER I"                                 . #x0418)
     ("CYRILLIC SMALL LETTER I"                                   . #x0438)
     ("CYRILLIC SMALL LETTER E"                                   . #x044D)
-    ("TIBETAN LETTER -A"                                         . #x0F60)
-    ("TIBETAN SUBJOINED LETTER -A"                               . #x0FB0)
     ("GEORGIAN SMALL LETTER AN"                                  . #x2D00)
     ("GEORGIAN SMALL LETTER BAN"                                 . #x2D01)
     ("GEORGIAN SMALL LETTER GAN"                                 . #x2D02)
@@ -299,6 +298,9 @@ This is needed for performance reasons in most cases."
     ("HALFWIDTH HANGUL LETTER CIEUC"                             . #xFFB8)
     ("SQUARED MV"                                                . #x1F14B)
     ("BELL"                                                      . #x1F514)
+    ;; other ambiguities, such as a glitch in some Emacs release
+    ("TIBETAN LETTER -A"                                         . #x0F60)
+    ("TIBETAN SUBJOINED LETTER -A"                               . #x0FB0)
     ;; Unicode 6.0 to 6.1 delta
     ("ARMENIAN DRAM SIGN"                                        . #x058F)
     ("ARABIC SIGN SAMVAT"                                        . #x0604)
