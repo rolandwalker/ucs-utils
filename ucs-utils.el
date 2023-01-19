@@ -1,14 +1,14 @@
 ;;; ucs-utils.el --- Utilities for Unicode characters
 ;;
-;; Copyright (c) 2012-2015 Roland Walker
+;; Copyright (c) 2012-2023 Roland Walker
 ;;
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/ucs-utils
 ;; URL: http://raw.githubusercontent.com/rolandwalker/ucs-utils/master/ucs-utils.el
-;; Version: 0.8.4
+;; Version: 0.9.0
 ;; Last-Updated: 26 Aug 2015
 ;; EmacsWiki: UcsUtils
-;; Package-Requires: ((persistent-soft "0.8.8") (pcache "0.2.3") (list-utils "0.4.2"))
+;; Package-Requires: ((emacs "24.3") (persistent-soft "0.8.10") (pcache "0.5.1") (list-utils "0.4.6"))
 ;; Keywords: i18n, extensions
 ;;
 ;; Simplified BSD License
@@ -161,7 +161,7 @@
 
 (eval-and-compile
   ;; for callf, callf2, assert, loop, gensym, incf, remove-if
-  (require 'cl))
+  (require 'cl-lib))
 
 (autoload 'pp                        "pp"              "Output the pretty-printed representation of OBJECT, any Lisp object.")
 (autoload 'pp-display-expression     "pp"              "Prettify and display EXPRESSION in an appropriate way, depending on length.")
@@ -224,7 +224,7 @@ This is needed for performance reasons in most cases."
 
 ;;; variables
 
-(defvar ucs-utils-names nil "Alist of cached (CHAR-NAME . CHAR-CODE) pairs, like `ucs-names'.")
+(defvar ucs-utils-names nil "Alist of cached (CHAR-NAME . CHAR-CODE) pairs, like variable `ucs-names'.")
 (defvar ucs-utils-names-hash nil "A hashed copy of the `ucs-utils-names' alist.")
 (defvar ucs-utils-all-prettified-names nil "List of all UCS names, prettified.")
 (defvar persistent-soft-storage-expiration (* 60 60 24 30) "Number of seconds to keep on-disk storage.")
@@ -5826,7 +5826,7 @@ This is needed for performance reasons in most cases."
     ("TURKEY"                                                                 . #x1F983)
     ("UNICORN FACE"                                                           . #x1F984)
     ("CHEESE WEDGE"                                                           . #x1F9C0))
-  "Corrections for ambiguities or omissions in `ucs-names', resolved in favor of Unicode 8.0.")
+  "Corrections for ambiguities or omissions in variable `ucs-names', resolved in favor of Unicode 8.0.")
 
 ;; supplement with generated names for CJK Unified Ideographs Extension E
 ;; (8.0 delta - new block)
@@ -5861,20 +5861,6 @@ This is portable to versions of Emacs without dynamic `flet`."
            (fset ,func ,o))))))
 
 ;;; compatibility functions
-
-(unless (fboundp 'string-match-p)
-  ;; added in 23.x
-  (defun string-match-p (regexp string &optional start)
-    "Same as `string-match' except this function does not change the match data."
-    (let ((inhibit-changing-match-data t))
-      (string-match regexp string start))))
-
-(unless (fboundp 'characterp)
-  (defun characterp (char)
-    "Return non-nil if CHAR is a character."
-    (and (integerp char)
-         (> char 0)
-         (<= char #x3FFFFF))))
 
 (defun persistent-softest-store (symbol value location &optional expiration)
   "Call `persistent-soft-store' but don't fail when library not present."
@@ -6028,7 +6014,7 @@ a famous example of a conflict.
 
 Returns nil if NAME does not exist."
   (save-match-data
-    (callf upcase name)
+    (cl-callf upcase name)
     (setq name (replace-regexp-in-string "\\<\\(BRAILLE DOTS\\|SELECTOR\\) \\([0-9]+\\)\\'" "\\1-\\2"
                  (replace-regexp-in-string "\\<\\(IDEOGRAPH\\) \\([0-9A-F]+\\)\\'" "\\1-\\2"
                    (replace-regexp-in-string "\\`[ \"]+" ""
@@ -6059,7 +6045,7 @@ Returns nil if NAME does not exist."
 
 (defun ucs-utils-prettify-ucs-string (name)
   "Prettify NAME, a string holding the UCS name for a character."
-  (callf capitalize name)
+  (cl-callf capitalize name)
   (save-match-data
     (when (string-match "([^()]+?)\\'" name)
       (setq name (replace-match (upcase (match-string-no-properties 0 name)) 'fixed-case 'literal name)))
@@ -6117,7 +6103,7 @@ found."
       (when (equal "<control>" name)
         (setq name (get-char-code-property char 'old-name)))
       (when (eq char ?\s)
-        (callf or name "Space"))
+        (cl-callf or name "Space"))
       (when (rassoc char ucs-utils-names-deletions)
         (setq name nil))
       (cond
@@ -6162,13 +6148,13 @@ When optional REGENERATE is given, re-generate cache."
              (gc-cons-percentage .5))
          (dolist (cell (ucs-utils-names))
            (when progress
-             (progress-reporter-update reporter (incf counter)))
+             (progress-reporter-update reporter (cl-incf counter)))
            (push (replace-regexp-in-string " " "_" (or (ucs-utils-pretty-name (cdr cell) 'no-hex) "")) draft-list))
          (dolist (name (delete "" (sort draft-list 'string<)))
            (unless (equal name prev-name)
              (push name ucs-utils-all-prettified-names))
            (setq prev-name name))
-         (callf nreverse ucs-utils-all-prettified-names)
+         (cl-callf nreverse ucs-utils-all-prettified-names)
          (let ((persistent-soft-inhibit-sanity-checks t))
            (persistent-softest-store store-key
                                      ucs-utils-all-prettified-names
@@ -6183,7 +6169,7 @@ When optional REGENERATE is given, re-generate cache."
 Arguments START, END, FROM-CHAR, and TO-CHAR are as documented at
 `ucs-utils-subst-char-in-region'."
   ;; done in a specific fashion to maintain markers
-  (loop for i from start to (1- end)
+  (cl-loop for i from start to (1- end)
         if (eq (char-after i) from-char)
         do (save-excursion
              (goto-char i)
@@ -6228,7 +6214,7 @@ TEST is set, in which case it must pass TEST."
         (setq char (ucs-utils--lookup char)))
       (when (stringp fallback)
         (setq fallback (ucs-utils--lookup fallback))
-        (assert (characterp fallback) nil "Invalid fallback: %s" orig-fallback))
+        (cl-assert (characterp fallback) nil "Invalid fallback: %s" orig-fallback))
       (setq retval (cond
                      ((and (characterp char)
                            (or (not test) (funcall test char)))
@@ -6241,7 +6227,7 @@ TEST is set, in which case it must pass TEST."
                      ((vectorp fallback)
                       fallback)
                      (t
-                      (assert (characterp fallback) nil "Invalid fallback: %s" orig-fallback)
+                      (cl-assert (characterp fallback) nil "Invalid fallback: %s" orig-fallback)
                       fallback)))
       (when ucs-utils-trade-memory-for-speed
         (puthash args retval ucs-utils-char-mem))
@@ -6304,10 +6290,10 @@ if multi-character fallbacks were used as in the example above."
         (flattener (if no-flatten 'identity 'ucs-utils-vector-flatten)))
     (cond
       ((vectorp sequence)
-       (callf append sequence nil))
+       (cl-callf append sequence nil))
       ((or (stringp sequence)
            (characterp sequence))
-       (callf list sequence)))
+       (cl-callf list sequence)))
     (cond
       ((eq fallback 'drop)
        (setq strip-char nil)
@@ -6317,13 +6303,13 @@ if multi-character fallbacks were used as in the example above."
       ((eq fallback 'error)
        (setq fallback (make-list (length sequence) 'error)))
       ((vectorp fallback)
-       (callf append fallback nil))
+       (cl-callf append fallback nil))
       ((or (stringp fallback)
            (characterp fallback))
-       (callf list fallback)))
-    (assert (and (listp sequence) (listp fallback)) nil "SEQUENCE and FALLBACK should be lists or vectors.")
-    (assert (= (length sequence) (length fallback)) nil "SEQUENCE and FALLBACK should be the same length.")
-    (funcall flattener (apply 'vector (delq strip-char (loop for elt in sequence
+       (cl-callf list fallback)))
+    (cl-assert (and (listp sequence) (listp fallback)) nil "SEQUENCE and FALLBACK should be lists or vectors.")
+    (cl-assert (= (length sequence) (length fallback)) nil "SEQUENCE and FALLBACK should be the same length.")
+    (funcall flattener (apply 'vector (delq strip-char (cl-loop for elt in sequence
                                                              for back-elt in fallback
                                                              collect (ucs-utils-char elt back-elt test)))))))
 
@@ -6350,7 +6336,7 @@ TEST is an optional predicate which characters must pass.  A
 useful value is 'char-displayable-p, which is available as
 the abbreviation 'cdp, unless you have otherwise defined that
 symbol."
-  (callf or fallback 'drop)
+  (cl-callf or fallback 'drop)
   (concat (delete nil (ucs-utils-vector sequence fallback test))))
 
 ;;;###autoload
@@ -6370,7 +6356,7 @@ TEST is an optional predicate which characters must pass.  A
 useful value is 'char-displayable-p, which is available as
 the abbreviation 'cdp, unless you have otherwise defined that
 symbol."
-  (assert (stringp fallback) nil "FALLBACK must be a string")
+  (cl-assert (stringp fallback) nil "FALLBACK must be a string")
   (condition-case nil
       (concat (ucs-utils-vector sequence 'error test))
     (error nil
@@ -6420,11 +6406,11 @@ run as all completion candidates are pre-generated."
            (gc-cons-percentage .5)
            (input (ido-completing-read
                   prompt
-                  (remove-if #'(lambda (x)
+                  (cl-remove-if #'(lambda (x)
                                  (and ucs-utils-hide-numbered-cjk-ideographs (string-match-p "_Ideograph[_-][0-9a-fA-F]+\\'" x)))
                              (ucs-utils-all-prettified-names 'progress)) nil nil nil 'character-name-history)))
       (when (string-match-p "\\`[0-9a-fA-F]+\\'" input)
-        (callf2 concat "#x" input))
+        (cl-callf2 concat "#x" input))
       (if (string-match-p "\\`#" input)
           (read input)
         ;; else
@@ -6451,7 +6437,7 @@ its UCS name translation."
   (let ((result nil)
         (print-level nil)
         (print-length nil))
-    (callf or arg current-prefix-arg)
+    (cl-callf or arg current-prefix-arg)
     (cond
       ((and (not pos)
             (use-region-p))
@@ -6462,7 +6448,7 @@ its UCS name translation."
        (save-excursion
          (goto-char (or pos (point)))
          (setq result (ucs-utils-pretty-name (char-after))))))
-    (assert result nil "Failed to find name for character at: %s" pos)
+    (cl-assert result nil "Failed to find name for character at: %s" pos)
     (cond
       ((equal arg '(4))
        (ucs-utils--with-mocked-function 'frame-width 0
